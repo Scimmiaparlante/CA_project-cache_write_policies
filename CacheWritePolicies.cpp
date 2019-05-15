@@ -24,7 +24,7 @@ void CacheWritePolicies::onNotify(message *m) {
 	cout << "Message " << m->id << ": Sent at " << m->timestamp << ", current timestamp " << getTime() << ". My name is " << getName() << "." << endl;
 	
 	SAC_to_CWP* request_struct = SAC_TO_CWP(m->magic_struct);
-	sender_name = string(m->source);
+	string sender_name = string(m->source);
 	//allocate the space for the pointer to the response magic struct
 	CWP_to_SAC* response_struct = NULL;
 	

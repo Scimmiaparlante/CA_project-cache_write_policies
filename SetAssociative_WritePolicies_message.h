@@ -1,8 +1,8 @@
 #ifndef SA_WP_MESSAGES
 #define SA_WP_MESSAGES
 
-#define SAC_TO_CWP(m) static_cast<SAC_TO_CWP*>(m)
-#define CWP_TO_SAC(m) (CWP_TO_SAC*)m
+#define SAC_TO_CWP(m) static_cast<SAC_to_CWP*>(m)
+#define CWP_TO_SAC(m) (CWP_to_SAC*)m
 
 #define CWR_RESPONSE_DELAY	10
 
@@ -17,7 +17,7 @@ enum OpType {  	SET_DIRTY,
 				WRITE_WITH_POLICIES
 			};
 			
-enum WriteResponse {PROPAGATE, NO_PROPAGATE, LOAD, CHECK_NEXT};
+enum WriteResponse {PROPAGATE, NO_PROPAGATE, LOAD_RECALL, CHECK_NEXT};
 
 /* request structure. possible combinations:
 		-SET_DIRTY: set the address of the cache line to set dirty
