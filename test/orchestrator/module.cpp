@@ -1,5 +1,8 @@
 #include <string>
 #include <vector>
+#include "../../SetAssociative_WritePolicies_message.h"
+#include <iostream>
+
 
 #include "module.h"
 
@@ -39,11 +42,11 @@ int module::getTime(){
 //Custom modules must push their messages using this function (delay is optional)
 void module::sendWithDelay(message* m, int delay){
 	std::cout<<"Response sent by " <<m->source <<" to " <<m->dest <<" with delay " <<delay <<std::endl;
-	std::cout<<"Hit flag: " <<m->magic_struct->hit_flag <<std::endl;
-	std::cout<<"Address: " <<m->magic_struct->address <<std::endl;
+	std::cout<<"Hit flag: " <<((CWP_to_SAC*)(m->magic_struct))->hit_flag <<std::endl;
+	std::cout<<"Address: " <<((CWP_to_SAC*)(m->magic_struct))->address <<std::endl;
 	std::cout<<"Response code: ";
-	
-	switch(m->magic_struct->wr) {
+
+	switch(((CWP_to_SAC*)(m->magic_struct))->wr) {
 		case 0:
 				std::cout<<"PROPAGATE";
 				break;
@@ -59,12 +62,12 @@ void module::sendWithDelay(message* m, int delay){
 		default:
 				break;
 	}
-	
+
 	std::cout<<std::endl <<"Data: ";
-	if (data == NULL)
+	if (((CWP_to_SAC*)(m->magic_struct))->data == NULL)
 		std::cout<<"NULL";
 	else
-		std::cout<<m->magic_struct->data;
-	
+		std::cout<<((CWP_to_SAC*)(m->magic_struct))->data;
+
 	std::cout<<std::endl;
 }
