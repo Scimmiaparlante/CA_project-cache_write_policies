@@ -95,17 +95,15 @@ class info_t {
 
 
 class Cache : public module {
-    const uint8_t offset_size;
+    protected:
     const uint8_t index_size;
 
     std::vector<std::vector<uint16_t> > data;
     std::vector<info_t> tag_memory;
 
-    protected:
     size_t size_line;
     const uint8_t tag_size;
-
-    private:
+    const uint8_t offset_size;
 
     // Given an address, set the bit validity
     void set_validity(uint16_t addr, bool v) {
@@ -117,8 +115,6 @@ class Cache : public module {
         this->tag_memory.at(this->resolve_index(addr))
             .set_tag(this->resolve_tag(addr));
     }
-
-    protected:
 
     // Get the index from a given address
     uint16_t resolve_index(uint16_t addr) {
@@ -192,7 +188,7 @@ class Cache : public module {
         }
     }
 
-  public:
+    public:
 
     Cache(char const *name, size_t size_line, size_t size_cache, int priority = 0)
         : module(name, priority),
