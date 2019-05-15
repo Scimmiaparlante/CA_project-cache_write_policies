@@ -19,7 +19,7 @@ void testCache(CacheWritePolicies c, const char *s){
 	request->op_type = STORE;			
 	request->address = 0x1111;
 	request->data = d;
-	m->magic_struct = (void*)&request;
+	m->magic_struct = (void*)request;
 	c.onNotify(m);
 	
 	request = new SAC_to_CWP;
@@ -30,7 +30,7 @@ void testCache(CacheWritePolicies c, const char *s){
 		
 	request->op_type = CHECK_DIRTY;
 	request->address = 0x1111;
-	m->magic_struct = (void*)&request;
+	m->magic_struct = (void*)request;
 	c.onNotify(m);
 	
 	request = new SAC_to_CWP;
@@ -41,7 +41,7 @@ void testCache(CacheWritePolicies c, const char *s){
 	//reply with 0
 	request->op_type = INVALID_LINE;
 	request->address = 0x1111;
-	m->magic_struct = (void*)&request;
+	m->magic_struct = (void*)request;
 	c.onNotify(m);						
 	
 	request = new SAC_to_CWP;
@@ -51,7 +51,7 @@ void testCache(CacheWritePolicies c, const char *s){
 		d[i] = 0x0000;
 	request->op_type = LOAD;
 	request->address = 0x1111;
-	m->magic_struct = (void*)&request;
+	m->magic_struct = (void*)request;
 	c.onNotify(m);
 	
 	request = new SAC_to_CWP;
@@ -65,7 +65,7 @@ void testCache(CacheWritePolicies c, const char *s){
 	request->op_type = WRITE_WITH_POLICIES;	
 	request->address = 0x1111;
 	request->data = d;
-	m->magic_struct = (void*)&request;
+	m->magic_struct = (void*)request;
 	c.onNotify(m);
 	
 	request = new SAC_to_CWP;
@@ -75,7 +75,7 @@ void testCache(CacheWritePolicies c, const char *s){
 		d[i] = 0x0000;
 	request->op_type = INVALID_LINE;
 	request->address = 0x1111;
-	m->magic_struct = (void*)&request;
+	m->magic_struct = (void*)request;
 	c.onNotify(m);
 	
 	request = new SAC_to_CWP;
@@ -89,7 +89,7 @@ void testCache(CacheWritePolicies c, const char *s){
 	request->op_type = WRITE_WITH_POLICIES;	
 	request->address = 0x1111;
 	request->data = d;
-	m->magic_struct = (void*)&request;
+	m->magic_struct = (void*)request;
 	c.onNotify(m);
 	
 	request = new SAC_to_CWP;
@@ -99,7 +99,7 @@ void testCache(CacheWritePolicies c, const char *s){
 		d[i] = 0x0000;
 	request->op_type = CHECK_VALIDITY_DIRTY;
 	request->address = 0x1111;
-	m->magic_struct = (void*)&request;
+	m->magic_struct = (void*)request;
 	c.onNotify(m);
 	
 	request = new SAC_to_CWP;
@@ -109,7 +109,7 @@ void testCache(CacheWritePolicies c, const char *s){
 		d[i] = 0x0000;
 	request->op_type = CHECK_DATA_VALIDITY;
 	request->address = 0x1111;
-	m->magic_struct = (void*)&request;
+	m->magic_struct = (void*)request;
 	c.onNotify(m);
 }
 
