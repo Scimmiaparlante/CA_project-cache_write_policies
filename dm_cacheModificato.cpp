@@ -82,6 +82,7 @@ class info_t {
     bool dirty;
     uint16_t tag;
 
+
   public:
     void set_validity(bool v) { this->validity = v; }
     void set_dirty(bool d) { this->dirty = d; }
@@ -92,16 +93,19 @@ class info_t {
     uint16_t get_tag() { return this->tag; }
 };
 
+
 class Cache : public module {
     const uint8_t offset_size;
     const uint8_t index_size;
     const uint8_t tag_size;
 
-    size_t size_line;
-
     std::vector<std::vector<uint16_t> > data;
     std::vector<info_t> tag_memory;
 
+    protected:
+    size_t size_line;
+
+    private:
     // Get the index from a given address
     uint16_t resolve_index(uint16_t addr) {
         uint16_t mask = 0 | ((1 << (this->index_size + this->offset_size)) - 1);
@@ -130,7 +134,6 @@ class Cache : public module {
     }
 
 protected:
-
     // Given an address, set the bit dirty
     void set_dirty(uint16_t addr, bool d) {
         this->tag_memory.at(this->resolve_index(addr)).set_dirty(d);
@@ -200,13 +203,13 @@ protected:
           tag_memory(size_cache / size_line) {
 
         // Check if the cache line size is power of 2.
-        (log(size_line) / log(2)) == (log(size_line) / log(2)) ||
-            size_line < MEM_LINE,
-            "Cache line must be a power of 2 NOT less than the memory line.");
+        //(log(size_line) / log(2)) == (log(size_line) / log(2)) ||
+        //    size_line < MEM_LINE ;
+            //"Cache line must be a power of 2 NOT less than the memory line.";
 
         // Check if the cache size is multiple of cache line.
-        (size_cache / size_line) == ((float)size_cache / size_line),
-            "The size of cache MUST be X times the size of cache line.");
+        //(size_cache / size_line) == ((float)size_cache / size_line);
+            //"The size of cache MUST be X times the size of cache line.");
     };
 
     void onNotify(message *m) {
