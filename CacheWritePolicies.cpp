@@ -6,6 +6,7 @@
 #include <iostream>
 #include <algorithm>
 
+using
 using namespace std;
 
 
@@ -145,15 +146,14 @@ CWP_to_SAC* CacheWritePolicies::WP_invalid_line(SAC_to_CWP* request_struct) {
 CWP_to_SAC* CacheWritePolicies::WP_load(SAC_to_CWP* request_struct) {
 	
 	bool data_valid = check_data_validity(request_struct->address);
-	
-	if(data_valid) {
-		vector<uint16_t> data_read = load(request_struct->address);
-	}
+	//if the data is valid and it's the same block the caller wants to write on -> HIT
+	bool hit = (data_valid && resolve_tag(request_struct->address) == tag);
 	
 	//create the reply structure
 	CWP_to_SAC* response_struct = new CWP_to_SAC();
-	response_struct->hit_flag = data_valid;
-	if(data_valid) {
+	response_struct->hit_flag = hit;
+	
+	if(hit) {
 		vector<uint16_t> data_read = load(request_struct->address);
 		response_struct->data = new uint16_t[size_line];
 		copy(data_read.begin(), data_read.end(), response_struct->data);
@@ -199,7 +199,7 @@ CWP_to_SAC* CacheWritePolicies::WP_write_with_policies(SAC_to_CWP* request_struc
 	//if the data is valid and it's the same block the caller wants to write on -> HIT
 	bool hit = (data_valid && resolve_tag(request_struct->address) == tag);
 	uint16_t tag = get_tag(request_struct->address);
-	vector<uint16_t> data_as_vector(request_struct->data, request_struct->data + size_line);
+	vector<uint16_t> data_as_vector(request_struct->data, request_struct->data);
 	
 	if(hit) {
 		if(hit_policy == WRITE_BACK)
@@ -210,7 +210,10 @@ CWP_to_SAC* CacheWritePolicies::WP_write_with_policies(SAC_to_CWP* request_struc
 		response_struct->address = request_struct->address;
 		
 		set_dirty(request_struct->address, 1);
-		bool res = store(request_struct->address, data_as_vector);
+		//read the old data and modify the word
+		vector<uint16_t> data_read = load(request_struct->address);
+		data_read.at(request_struct->address & !(0xffff << offset_size)) = data_as_vector.at(0);
+		bool res = store(request_struct->address, data_read);
 	
 		if(res == false)
 			cout << "Cache write policies: cache module returned bad dimension error" << endl;	
