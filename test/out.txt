@@ -2,19 +2,19 @@ Response sent by test to cache1 with delay 10
 Hit flag: 
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: 
+Data: NULL
 
 Response sent by test to cache1 with delay 10
 Hit flag: 1
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: 
+Data: NULL
 
 Response sent by test to cache1 with delay 10
 Hit flag: 1
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: 
+Data: NULL
 
 Response sent by test to cache1 with delay 10
 Hit flag: 
@@ -56,19 +56,19 @@ Response sent by test to cache2 with delay 10
 Hit flag: 
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: 
+Data: NULL
 
 Response sent by test to cache2 with delay 10
 Hit flag: 1
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: 
+Data: NULL
 
 Response sent by test to cache2 with delay 10
 Hit flag: 1
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: 
+Data: NULL
 
 Response sent by test to cache2 with delay 10
 Hit flag: 
@@ -110,19 +110,19 @@ Response sent by test to cache3 with delay 10
 Hit flag: 
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: 
+Data: NULL
 
 Response sent by test to cache3 with delay 10
 Hit flag: 1
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: 
+Data: NULL
 
 Response sent by test to cache3 with delay 10
 Hit flag: 1
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: 
+Data: NULL
 
 Response sent by test to cache3 with delay 10
 Hit flag: 
@@ -164,19 +164,19 @@ Response sent by test to cache4 with delay 10
 Hit flag: 
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: 
+Data: NULL
 
 Response sent by test to cache4 with delay 10
 Hit flag: 1
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: 
+Data: NULL
 
 Response sent by test to cache4 with delay 10
 Hit flag: 1
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: 
+Data: NULL
 
 Response sent by test to cache4 with delay 10
 Hit flag: 
