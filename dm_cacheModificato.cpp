@@ -200,14 +200,12 @@ protected:
           tag_memory(size_cache / size_line) {
 
         // Check if the cache line size is power of 2.
-        static_assert(
-            (int)(log(size_line) / log(2)) == (log(size_line) / log(2)) ||
-                size_line < MEM_LINE,
+        (log(size_line) / log(2)) == (log(size_line) / log(2)) ||
+            size_line < MEM_LINE,
             "Cache line must be a power of 2 NOT less than the memory line.");
 
         // Check if the cache size is multiple of cache line.
-        static_assert(
-            (size_cache / size_line) == ((float)size_cache / size_line),
+        (size_cache / size_line) == ((float)size_cache / size_line),
             "The size of cache MUST be X times the size of cache line.");
     };
 
