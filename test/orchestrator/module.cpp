@@ -70,4 +70,9 @@ void module::sendWithDelay(message* m, int delay){
 		std::cout<<((CWP_to_SAC*)(m->magic_struct))->data;
 
 	std::cout<<std::endl;
+	
+	if (((CWP_to_SAC*)(m->magic_struct))->data != NULL)
+		delete ((CWP_to_SAC*)(m->magic_struct))->data;
+	delete ((CWP_to_SAC*)(m->magic_struct));
+	delete m;
 }
