@@ -65,7 +65,7 @@ void CacheWritePolicies::onNotify(message *m) {
 	message response_message = WP_create_message(sender_name);
 	response_message->magic_struct = (void*)response_struct;
 	
-	sendWithDelay(myMessage, CWR_RESPONSE_DELAY);
+	module::sendWithDelay(myMessage, CWR_RESPONSE_DELAY);
 }
 
 
