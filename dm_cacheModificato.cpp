@@ -112,12 +112,6 @@ class Cache : public module {
         return (addr & mask) >> this->offset_size;
     }
 
-    // Get the tag from a given address
-    uint16_t resolve_tag(uint16_t addr) {
-        return addr >> (this->index_size + this->offset_size);
-    }
-
-
     // Given an address, set the bit validity
     void set_validity(uint16_t addr, bool v) {
         this->tag_memory.at(this->resolve_index(addr)).set_validity(v);
@@ -144,6 +138,11 @@ protected:
     // Check if the data at a given address is valid
     bool check_dirty(uint16_t addr){
         return this->tag_memory.at(this->resolve_index(addr)).get_validity();
+    }
+
+    // Get the tag from a given address
+    uint16_t resolve_tag(uint16_t addr) {
+        return addr >> (this->index_size + this->offset_size);
     }
 
     // Check if the data at a given address is valid and the tag matches with
