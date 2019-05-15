@@ -94,7 +94,7 @@ class info_t {
 };
 
 
-class Cache : public module {
+class Cache : private module {
     protected:
     const uint8_t index_size;
 

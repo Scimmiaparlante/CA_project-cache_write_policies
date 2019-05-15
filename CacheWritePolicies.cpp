@@ -6,17 +6,17 @@
 #include <iostream>
 #include <algorithm>
 
-using
+using namespace dm_cache;
 using namespace std;
 
 
-CacheWritePolicies::CacheWritePolicies(string name, int priority, uint16_t cache_size, uint16_t line_size, HIT_POLICY hp, MISS_POLICY mp) : module(name, priority), Cache(cache_size, line_size) {
+CacheWritePolicies::CacheWritePolicies(string name, int priority, uint16_t cache_size, uint16_t line_size, HIT_POLICY hp, MISS_POLICY mp) : module(name, priority), Cache("dm_cache", cache_size, line_size, priority) {
 	hit_policy = hp;
 	miss_policy = mp;
 }
 
 
-CacheWritePolicies::onNotify(message *m) {
+void CacheWritePolicies::onNotify(message *m) {
 	
 	//Don't forget to check if the message was for me since we are in a broadcast environment
 	if(m->dest != getName())
@@ -31,25 +31,25 @@ CacheWritePolicies::onNotify(message *m) {
 	
 	switch(request_struct->op_type) {
 		
-		case SET_DIRTY:
+		case SAC_CWP_Messages::SET_DIRTY:
 			response_struct = WP_set_dirty(request_struct);
 			break;
-		case CHECK_VALIDITY_DIRTY:
+		case SAC_CWP_Messages::CHECK_VALIDITY_DIRTY:
 			response_struct = WP_check_validity_dirty(request_struct);
 			break;
-		case CHECK_DATA_VALIDITY:
+		case SAC_CWP_Messages::CHECK_DATA_VALIDITY:
 			response_struct = WP_check_data_validity(request_struct);
 			break;
-		case INVALID_LINE:
+		case SAC_CWP_Messages::INVALID_LINE:
 			response_struct = WP_invalid_line(request_struct);
 			break;
-		case LOAD:
+		case SAC_CWP_Messages::LOAD:
 			response_struct = WP_load(request_struct);
 			break;
-		case STORE:
+		case SAC_CWP_Messages::STORE:
 			response_struct = WP_store(request_struct);
 			break;		
-		case WRITE_WITH_POLICIES:
+		case SAC_CWP_Messages::WRITE_WITH_POLICIES:
 			response_struct = WP_write_with_policies(request_struct);
 			break;			
 		default:
