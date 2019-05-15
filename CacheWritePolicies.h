@@ -18,6 +18,17 @@ class CacheWritePolicies : public Cache, public module {
 	HIT_POLICY hit_policy;
 	MISS_POLICY miss_policy;
 	
+	message* WP_create_message(string destination);
+	
+	//functions implementation
+	CWP_to_SAC* WP_set_dirty(SAC_to_CWP* request_struct);
+	CWP_to_SAC* WP_check_validity_dirty(SAC_to_CWP* request_struct);
+	CWP_to_SAC* WP_check_data_validity(SAC_to_CWP* request_struct);
+	CWP_to_SAC* WP_check_dirty(SAC_to_CWP* request_struct);
+	CWP_to_SAC* WP_invalid_line(SAC_to_CWP* request_struct);
+
+
+
 		
 public:
 

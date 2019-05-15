@@ -32,10 +32,27 @@ CacheWritePolicies::onNotify(message *m) {
 	switch(request_struct->op_type) {
 		
 		case SET_DIRTY:
-			response_struct = set_dirty(request_struct->address, 1);
+			response_struct = WP_set_dirty(request_struct);
 			break;
-		case :
-		//...
+		case CHECK_VALIDITY_DIRTY:
+			response_struct = WP_check_validity_dirty(request_struct);
+			break;
+		case CHECK_DATA_VALIDITY:
+			response_struct = ;
+			break;
+		case INVALID_LINE:
+			response_struct = ;
+			break;
+		case LOAD:
+			response_struct = ;
+			break;
+		case STORE:
+			response_struct = ;
+			break;		
+		case WRITE_WITH_POLICIES:
+			response_struct = ;
+			break;
+			
 		
 		default:
 		
@@ -70,6 +87,63 @@ CWP_to_SAC* CacheWritePolicies::WP_set_dirty(SAC_to_CWP* request_struct) {
 	return response_struct;
 }
 
+CWP_to_SAC* CacheWritePolicies::WP_check_validity_dirty(SAC_to_CWP* request_struct) {
+	
+	bool data_valid_dirty = check_validity_dirty(request_struct->address);
+	
+	//create the reply structure
+	CWP_to_SAC* response_struct = new CWP_to_SAC();
+	response_struct->hit_flag = data_valid_dirty;
+	response_struct->data = NULL;
+	response_struct->address = request_struct->address;
+	
+	return response_struct;
+}
+
+CWP_to_SAC* CacheWritePolicies::WP_check_data_validity(SAC_to_CWP* request_struct) {
+	
+	bool data_valid = check_data_validity(request_struct->address);
+	
+	//create the reply structure
+	CWP_to_SAC* response_struct = new CWP_to_SAC();
+	response_struct->hit_flag = data_valid;
+	response_struct->data = NULL;
+	response_struct->address = request_struct->address;
+	
+	return response_struct;
+}
+
+CWP_to_SAC* CacheWritePolicies::WP_check_dirty(SAC_to_CWP* request_struct) {
+	
+	bool dirty = check_dirty(request_struct->address);
+	
+	//create the reply structure
+	CWP_to_SAC* response_struct = new CWP_to_SAC();
+	response_struct->hit_flag = dirty;
+	response_struct->data = NULL;
+	response_struct->address = request_struct->address;
+	
+	return response_struct;
+}
+
+
+CWP_to_SAC* CacheWritePolicies::WP_invalid_line(SAC_to_CWP* request_struct) {
+	
+	bool data_valid = check_data_validity(request_struct->address);
+	
+	if(data_valid)
+		invalid_line(request_struct->address);
+	
+	//create the reply structure
+	CWP_to_SAC* response_struct = new CWP_to_SAC();
+	response_struct->hit_flag = data_valid;
+	response_struct->data = NULL;
+	response_struct->address = request_struct->address;
+	
+	return response_struct;
+}
+
+
 
 message* CacheWritePolicies::WP_create_message(string destination) {
 
@@ -79,5 +153,4 @@ message* CacheWritePolicies::WP_create_message(string destination) {
 	strcpy(myMessage->source, getName().c_str());
 	strcpy(myMessage->dest, destination.c_str());
 	myMessage->magic_struct = NULL;
-	
 }
