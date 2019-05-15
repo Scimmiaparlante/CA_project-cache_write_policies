@@ -7,6 +7,7 @@
 #define CWR_RESPONSE_DELAY	10
 
 enum OpType {  	SET_DIRTY,
+				CHECK_DIRTY,
 				CHECK_VALIDITY_DIRTY,
 				CHECK_DATA_VALIDITY,
 				INVALID_LINE,
@@ -19,6 +20,7 @@ enum WriteResponse {PROPAGATE, NO_PROPAGATE, LOAD, CHECK_NEXT};
 
 /* request structure. possible combinations:
 		-SET_DIRTY: set the address of the cache line to set dirty
+		-CHECK_DIRTY: set the address of the cache line whose dirty bit must be checked
 		-CHECK_VALIDITY_DIRTY: set the address to check
 		-CHECK_DATA_VALIDITY: set the address to check
 		-INVALID_LINE: set the address to invalid
@@ -37,8 +39,9 @@ struct SAC_to_CWP {
 
 /* response structure. possible combinations:
 		-SET_DIRTY: address of the dirty cache line and the hit flag: 0 if the line is invalid
-		-CHECK_VALIDITY_DIRTY: address of the checked cache line and the hit flag: 1 if the line is dirty
-		-CHECK_DATA_VALIDITY: address of the checked cache line and the hit flag: 1 if the line is valid
+		-CHECK_DIRTY: address of the checked cache line and the hit flag: 1 if the line is dirty
+		-CHECK_VALIDITY_DIRTY: address of the checked cache line and the hit flag: 1 if the line is dirty, 0 either if the line is invalid or if it's not dirty
+		-CHECK_DATA_VALIDITY: address of the checked cache line and the hit flag: 1 if the addressed line is valid and it's the requested one
 		-INVALID_LINE: address of the invalidated cache line and the hit flag: 0 if the line was already invalid
 		-LOAD: address of the requested cache line, hit flag (1 in case of hit) and the read data (null in case of miss)
 		-STORE: address of the written cache line
