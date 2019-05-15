@@ -71,6 +71,8 @@ void CacheWritePolicies::onNotify(message *m) {
 
 CWP_to_SAC* CacheWritePolicies::WP_set_dirty(SAC_to_CWP* request_struct) {
 	
+	cout << "Cache write policies: WP_set_dirty called" << endl;
+	
 	//check if the block is valid
 	bool data_valid = check_data_validity(request_struct->address);
 	//perform the operation->set to 1 the dirty bit of the desired block (if it's valid)
@@ -89,6 +91,8 @@ CWP_to_SAC* CacheWritePolicies::WP_set_dirty(SAC_to_CWP* request_struct) {
 
 CWP_to_SAC* CacheWritePolicies::WP_check_validity_dirty(SAC_to_CWP* request_struct) {
 	
+	cout << "Cache write policies: WP_check_validity_dirty called" << endl;
+	
 	bool data_valid_dirty = check_validity_dirty(request_struct->address);
 	
 	//create the reply structure
@@ -102,6 +106,8 @@ CWP_to_SAC* CacheWritePolicies::WP_check_validity_dirty(SAC_to_CWP* request_stru
 }
 
 CWP_to_SAC* CacheWritePolicies::WP_check_data_validity(SAC_to_CWP* request_struct) {
+	
+	cout << "Cache write policies: WP_check_data_validity called" << endl;
 	
 	bool data_valid = check_data_validity(request_struct->address);
 	
@@ -117,6 +123,8 @@ CWP_to_SAC* CacheWritePolicies::WP_check_data_validity(SAC_to_CWP* request_struc
 
 CWP_to_SAC* CacheWritePolicies::WP_check_dirty(SAC_to_CWP* request_struct) {
 	
+	cout << "Cache write policies: WP_check_dirty called" << endl;
+	
 	bool dirty = check_dirty(request_struct->address);
 	
 	//create the reply structure
@@ -131,6 +139,8 @@ CWP_to_SAC* CacheWritePolicies::WP_check_dirty(SAC_to_CWP* request_struct) {
 
 
 CWP_to_SAC* CacheWritePolicies::WP_invalid_line(SAC_to_CWP* request_struct) {
+	
+	cout << "Cache write policies: WP_invalid_line called" << endl;
 	
 	bool data_valid = check_data_validity(request_struct->address);
 	
@@ -148,6 +158,8 @@ CWP_to_SAC* CacheWritePolicies::WP_invalid_line(SAC_to_CWP* request_struct) {
 }
 
 CWP_to_SAC* CacheWritePolicies::WP_load(SAC_to_CWP* request_struct) {
+	
+	cout << "Cache write policies: WP_load called" << endl;
 	
 	bool data_valid = check_data_validity(request_struct->address);
 	uint16_t tag = get_tag(request_struct->address);
@@ -175,6 +187,8 @@ CWP_to_SAC* CacheWritePolicies::WP_load(SAC_to_CWP* request_struct) {
 
 CWP_to_SAC* CacheWritePolicies::WP_store(SAC_to_CWP* request_struct) {
 	
+	cout << "Cache write policies: WP_store called" << endl;
+	
 	bool data_valid = check_data_validity(request_struct->address);
 	vector<uint16_t> data_as_vector(request_struct->data, request_struct->data + size_line);
 	
@@ -199,6 +213,8 @@ CWP_to_SAC* CacheWritePolicies::WP_store(SAC_to_CWP* request_struct) {
 
 
 CWP_to_SAC* CacheWritePolicies::WP_write_with_policies(SAC_to_CWP* request_struct) {
+	
+	cout << "Cache write policies: WP_write_with_policies called" << endl;
 	
 	//create the reply structure
 	CWP_to_SAC* response_struct = new CWP_to_SAC();
