@@ -18,7 +18,6 @@ class CacheWritePolicies : public Cache, public module {
 	HIT_POLICY hit_policy;
 	MISS_POLICY miss_policy;
 	
-	
 		
 public:
 
