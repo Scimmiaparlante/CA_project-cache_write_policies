@@ -10,7 +10,7 @@ using namespace dm_cache;
 using namespace std;
 
 
-CacheWritePolicies::CacheWritePolicies(string name, int priority, uint16_t cache_size, uint16_t line_size, HIT_POLICY hp, MISS_POLICY mp) : module(name, priority), Cache(cache_size, line_size) {
+CacheWritePolicies::CacheWritePolicies(string name, int priority, uint16_t cache_size, uint16_t line_size, HIT_POLICY hp, MISS_POLICY mp) : module(name, priority), Cache("dm_cache", cache_size, line_size, priority) {
 	hit_policy = hp;
 	miss_policy = mp;
 }
