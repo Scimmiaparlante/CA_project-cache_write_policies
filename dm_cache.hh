@@ -176,12 +176,12 @@ class Cache {
     public:
 
     Cache(size_t size_line, size_t size_cache)
-        : offset_size(std::log(size_line / MEM_LINE) / std::log(2) +
+        : index_size(std::log(size_cache / size_line) / std::log(2)),
+		  offset_size(std::log(size_line / MEM_LINE) / std::log(2) +
                       MEM_OFFSET),
-          index_size(std::log(size_cache / size_line) / std::log(2)),
-          tag_size(ADDR_SIZE - (offset_size + index_size)),
           data(size_cache / size_line,
                std::vector<uint16_t>(size_line / MEM_LINE)),
+		  tag_size(ADDR_SIZE - (offset_size + index_size)),
           tag_memory(size_cache / size_line) {
 
         // Check if the cache line size is power of 2.

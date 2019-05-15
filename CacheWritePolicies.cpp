@@ -9,7 +9,7 @@
 using namespace std;
 
 
-CacheWritePolicies::CacheWritePolicies(string name, int priority, uint16_t cache_size, uint16_t line_size, HIT_POLICY hp, MISS_POLICY mp) : module(name, priority), Cache(line_size, cache_size) {
+CacheWritePolicies::CacheWritePolicies(string name, int priority, uint16_t cache_size, uint16_t line_size, HIT_POLICY hp, MISS_POLICY mp) : Cache(line_size, cache_size), module(name, priority) {
 	hit_policy = hp;
 	miss_policy = mp;
 }
@@ -58,7 +58,7 @@ void CacheWritePolicies::onNotify(message *m) {
 	
 	
 	// delete the received message and structure (!!!!! CHECK IF IT MUST BE DONE THIS WAY)
-	delete m->magic_struct;
+	delete request_struct;
 	delete m;
 
 	//create the response message
@@ -220,9 +220,9 @@ CWP_to_SAC* CacheWritePolicies::WP_write_with_policies(SAC_to_CWP* request_struc
 			cout << "Cache write policies: cache module returned bad dimension error" << endl;	
 	}
 	else { 	//MISS
-		if(hit_policy == WRITE_ALLOCATE)
+		if(miss_policy == WRITE_ALLOCATE)
 			response_struct->wr = LOAD_RECALL;	
-		else if(hit_policy == WRITE_NO_ALLOCATE)
+		else if(miss_policy == WRITE_NO_ALLOCATE)
 			response_struct->wr = CHECK_NEXT;
 		
 		if(!data_valid)
@@ -249,4 +249,6 @@ message* CacheWritePolicies::WP_create_message(string destination) {
 	strcpy(myMessage->source, getName().c_str());
 	strcpy(myMessage->dest, destination.c_str());
 	myMessage->magic_struct = NULL;
+	
+	return message;
 }
