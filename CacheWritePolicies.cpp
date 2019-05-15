@@ -56,6 +56,7 @@ void CacheWritePolicies::onNotify(message *m) {
 			break;
 	}
 	
+	cout << "Cache write policies: Operation completed - sending reply..." << endl;
 	
 	// delete the received message and structure (!!!!! CHECK IF IT MUST BE DONE THIS WAY)
 	delete request_struct;
@@ -65,7 +66,7 @@ void CacheWritePolicies::onNotify(message *m) {
 	message* response_message = WP_create_message(sender_name);
 	response_message->magic_struct = (void*)response_struct;
 	
-	module::sendWithDelay(response_message, CWR_RESPONSE_DELAY);
+	sendWithDelay(response_message, CWR_RESPONSE_DELAY);
 }
 
 
