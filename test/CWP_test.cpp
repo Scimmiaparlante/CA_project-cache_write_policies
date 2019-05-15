@@ -1,5 +1,8 @@
 #include "CacheWritePolicies.h"
 
+/*
+This function tests the cache for all the possible requests
+*/
 void testCache(CacheWritePolicies c, const char *s){
 	SAC_to_CWP	request;
 	message m;
@@ -9,7 +12,7 @@ void testCache(CacheWritePolicies c, const char *s){
 	m.source = "test";
 	m.dest = s;
 	
-	request.op_type = STORE;			// deve restituire load o check next
+	request.op_type = STORE;			// deve restituire LOAD_RECALL o CHECK_NEXT
 	request.address = 0x1111;
 	request.data = d;
 	m.magic_struct = (void*)request;
@@ -36,7 +39,7 @@ void testCache(CacheWritePolicies c, const char *s){
 	c.onNotify(&m);
 	
 	d[0] = 0xFFFF;
-	request.op_type = WRITE_WITH_POLICIES;	// deve restituire propagate o no
+	request.op_type = WRITE_WITH_POLICIES;	// deve restituire PROPAGATE o NO_PROPAGATE
 	request.address = 0x1111;
 	request.data = d;
 	m.magic_struct = (void*)request;
@@ -59,6 +62,7 @@ int main(){
 						cache3("cache3", 1, 4096, 64, WRITE_BACK, WRITE_NO_ALLOCATE),
 						cache4("cache4", 1, 4096, 64, WRITE_THROUGH, WRITE_NO_ALLOCATE);
 	
+	// the tests are repeated for all the possible combinations of cache policies
 	testCache(cache1, "cache1");
 	testCache(cache2, "cache2");
 	testCache(cache3, "cache3");
