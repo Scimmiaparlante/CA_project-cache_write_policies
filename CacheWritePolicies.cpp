@@ -82,6 +82,7 @@ CWP_to_SAC* CacheWritePolicies::WP_set_dirty(SAC_to_CWP* request_struct) {
 	response_struct->hit_flag = data_valid;
 	response_struct->data = NULL;
 	response_struct->address = request_struct->address;
+	response_struct->wr = 0;
 	
 	return response_struct;
 }
@@ -95,6 +96,7 @@ CWP_to_SAC* CacheWritePolicies::WP_check_validity_dirty(SAC_to_CWP* request_stru
 	response_struct->hit_flag = data_valid_dirty;
 	response_struct->data = NULL;
 	response_struct->address = request_struct->address;
+	response_struct->wr = 0;
 	
 	return response_struct;
 }
@@ -108,6 +110,7 @@ CWP_to_SAC* CacheWritePolicies::WP_check_data_validity(SAC_to_CWP* request_struc
 	response_struct->hit_flag = data_valid;
 	response_struct->data = NULL;
 	response_struct->address = request_struct->address;
+	response_struct->wr = 0;
 	
 	return response_struct;
 }
@@ -121,6 +124,7 @@ CWP_to_SAC* CacheWritePolicies::WP_check_dirty(SAC_to_CWP* request_struct) {
 	response_struct->hit_flag = dirty;
 	response_struct->data = NULL;
 	response_struct->address = request_struct->address;
+	response_struct->wr = 0;
 	
 	return response_struct;
 }
@@ -138,6 +142,7 @@ CWP_to_SAC* CacheWritePolicies::WP_invalid_line(SAC_to_CWP* request_struct) {
 	response_struct->hit_flag = data_valid;
 	response_struct->data = NULL;
 	response_struct->address = request_struct->address;
+	response_struct->wr = 0;
 	
 	return response_struct;
 }
@@ -161,7 +166,9 @@ CWP_to_SAC* CacheWritePolicies::WP_load(SAC_to_CWP* request_struct) {
 	else {
 		response_struct->data = NULL;
 	}
+	
 	response_struct->address = request_struct->address;
+	response_struct->wr = 0;
 	
 	return response_struct;
 }
@@ -185,6 +192,7 @@ CWP_to_SAC* CacheWritePolicies::WP_store(SAC_to_CWP* request_struct) {
 	response_struct->hit_flag = data_valid;
 	response_struct->data = NULL;
 	response_struct->address = request_struct->address;
+	response_struct->wr = 0;
 	
 	return response_struct;
 }
