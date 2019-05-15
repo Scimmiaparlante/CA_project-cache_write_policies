@@ -1,7 +1,7 @@
 #ifndef SA_WP_MESSAGES
 #define SA_WP_MESSAGES
 
-#define SAC_TO_CWP(m) (SAC_TO_CWP*)m
+#define SAC_TO_CWP(m) static_cast<SAC_TO_CWP*>(m)
 #define CWP_TO_SAC(m) (CWP_TO_SAC*)m
 
 #define CWR_RESPONSE_DELAY	10
