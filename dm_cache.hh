@@ -82,13 +82,15 @@ class info_t {
 class Cache {
     protected:
     const uint8_t index_size;
+	const uint8_t offset_size;
 
     std::vector<std::vector<uint16_t> > data;
+	const uint8_t tag_size;
     std::vector<info_t> tag_memory;
 
     size_t size_line;
-    const uint8_t tag_size;
-    const uint8_t offset_size;
+    
+    
 
     // Given an address, set the bit validity
     void set_validity(uint16_t addr, bool v) {
@@ -175,14 +177,14 @@ class Cache {
 
     public:
 
-    Cache(size_t size_line, size_t size_cache)
-        : index_size(std::log(size_cache / size_line) / std::log(2)),
-		  offset_size(std::log(size_line / MEM_LINE) / std::log(2) +
+    Cache(size_t size_line_, size_t size_cache_)
+        : index_size(std::log(size_cache_ / size_line_) / std::log(2)),
+		  offset_size(std::log(size_line_ / MEM_LINE) / std::log(2) +
                       MEM_OFFSET),
-          data(size_cache / size_line,
-               std::vector<uint16_t>(size_line / MEM_LINE)),
+          data(size_cache_ / size_line_,
+               std::vector<uint16_t>(size_line_ / MEM_LINE)),
 		  tag_size(ADDR_SIZE - (offset_size + index_size)),
-          tag_memory(size_cache / size_line) {
+          tag_memory(size_cache_ / size_line_) {
 
         // Check if the cache line size is power of 2.
         //(log(size_line) / log(2)) == (log(size_line) / log(2)) ||
@@ -192,6 +194,9 @@ class Cache {
         // Check if the cache size is multiple of cache line.
         //(size_cache / size_line) == ((float)size_cache / size_line);
             //"The size of cache MUST be X times the size of cache line.");
+			
+		size_line = size_line_;
+		
     };
 
     

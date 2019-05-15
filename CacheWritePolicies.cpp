@@ -250,5 +250,5 @@ message* CacheWritePolicies::WP_create_message(string destination) {
 	strcpy(myMessage->dest, destination.c_str());
 	myMessage->magic_struct = NULL;
 	
-	return message;
+	return myMessage;
 }
