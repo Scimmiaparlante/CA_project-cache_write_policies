@@ -117,10 +117,6 @@ class Cache : public module {
         return addr >> (this->index_size + this->offset_size);
     }
 
-    // Given an address, return the tag from the tag memory
-    uint16_t get_tag(uint16_t addr) {
-        return this->tag_memory.at(this->resolve_index(addr)).get_tag();
-    }
 
     // Given an address, set the bit validity
     void set_validity(uint16_t addr, bool v) {
@@ -137,6 +133,11 @@ protected:
     // Given an address, set the bit dirty
     void set_dirty(uint16_t addr, bool d) {
         this->tag_memory.at(this->resolve_index(addr)).set_dirty(d);
+    }
+
+    // Given an address, return the tag from the tag memory
+    uint16_t get_tag(uint16_t addr) {
+        return this->tag_memory.at(this->resolve_index(addr)).get_tag();
     }
 
     // NOTE. Add on the original file
