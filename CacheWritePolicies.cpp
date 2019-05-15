@@ -6,7 +6,7 @@
 #include <iostream>
 #include <algorithm>
 
-using
+using namespace dm_cache;
 using namespace std;
 
 
