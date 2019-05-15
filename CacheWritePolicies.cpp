@@ -16,7 +16,7 @@ CacheWritePolicies::CacheWritePolicies(string name, int priority, uint16_t cache
 }
 
 
-CacheWritePolicies::onNotify(message *m) {
+void CacheWritePolicies::onNotify(message *m) {
 	
 	//Don't forget to check if the message was for me since we are in a broadcast environment
 	if(m->dest != getName())
