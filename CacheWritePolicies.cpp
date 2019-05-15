@@ -18,10 +18,10 @@ CacheWritePolicies::CacheWritePolicies(string name, int priority, uint16_t cache
 void CacheWritePolicies::onNotify(message *m) {
 	
 	//Don't forget to check if the message was for me since we are in a broadcast environment
-	if(m->dest != getName())
+	if(m->dest != module::getName())
 		return;
 		
-	cout << "Message " << m->id << ": Sent at " << m->timestamp << ", current timestamp " << getTime() << ". My name is " << getName() << "." << endl;
+	cout << "Message " << m->id << ": Sent at " << m->timestamp << ", current timestamp " << module::getTime() << ". My name is " << module::getName() << "." << endl;
 	
 	SAC_to_CWP* request_struct = SAC_TO_CWP(m->magic_struct);
 	string sender_name = string(m->source);
@@ -243,8 +243,8 @@ message* CacheWritePolicies::WP_create_message(string destination) {
 
 	message* myMessage = new message();
 	myMessage->valid = 1;
-	myMessage->timestamp = getTime();
-	strcpy(myMessage->source, getName().c_str());
+	myMessage->timestamp = module::getTime();
+	strcpy(myMessage->source, mosule::getName().c_str());
 	strcpy(myMessage->dest, destination.c_str());
 	myMessage->magic_struct = NULL;
 }
