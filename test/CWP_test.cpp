@@ -16,8 +16,6 @@ void testCache(CacheWritePolicies c, const char *s){
 	strcpy(m->source, "test");
 	strcpy(m->dest, s);
 	
-	//reply with LOAD_RECALL in case of write_allocate (1, 2)
-	//CHECK_NEXT in case of write_no_allocate		   (3, 4)
 	request->op_type = STORE;			
 	request->address = 0x1111;
 	request->data = d;
@@ -40,13 +38,22 @@ void testCache(CacheWritePolicies c, const char *s){
 	m->magic_struct = (void*)&request;
 	c.onNotify(m);
 	
+	//reply with PROPAGATE in case of write_through (2, 4)
+	//NO_PROPAGATE in case of write_back		    (1, 3)
+	d[0] = 0xFFFF;
+	request->op_type = WRITE_WITH_POLICIES;	
+	request->address = 0x1111;
+	request->data = d;
+	m->magic_struct = (void*)&request;
+	c.onNotify(m);
+	
 	request->op_type = INVALID_LINE;
 	request->address = 0x1111;
 	m->magic_struct = (void*)&request;
 	c.onNotify(m);
 	
-	//reply with PROPAGATE in case of write_through (2, 4)
-	//NO_PROPAGATE in case of write_back			(1, 3)
+	//reply with LOAD_RECALL in case of write_allocate (1, 2)
+	//CHECK_NEXT in case of write_no_allocate		   (3, 4)
 	d[0] = 0xFFFF;
 	request->op_type = WRITE_WITH_POLICIES;	
 	request->address = 0x1111;
