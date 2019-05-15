@@ -13,7 +13,7 @@ enum HIT_POLICY {WRITE_BACK, WRITE_THROUGH};
 enum MISS_POLICY {WRITE_ALLOCATE, WRITE_NO_ALLOCATE};
 
 
-class CacheWritePolicies : public class Cache, public class module {
+class CacheWritePolicies : public dm_cache::Cache, public module {
 	
 	HIT_POLICY hit_policy;
 	MISS_POLICY miss_policy;
