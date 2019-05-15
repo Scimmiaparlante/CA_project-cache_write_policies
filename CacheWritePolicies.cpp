@@ -213,7 +213,7 @@ CWP_to_SAC* CacheWritePolicies::WP_write_with_policies(SAC_to_CWP* request_struc
 		set_dirty(request_struct->address, 1);
 		//read the old data and modify the word
 		vector<uint16_t> data_read = load(request_struct->address);
-		data_read.at(request_struct->address & !(0xffff << offset_size)) = data_as_vector.at(0);
+		data_read.at(request_struct->address & ~(0xffff << offset_size)) = data_as_vector.at(0);
 		bool res = store(request_struct->address, data_read);
 	
 		if(res == false)
