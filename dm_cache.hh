@@ -119,7 +119,7 @@ class Cache : public module {
     }
 
     protected:
-        
+
     // Get the index from a given address
     uint16_t resolve_index(uint16_t addr) {
         uint16_t mask = 0 | ((1 << (this->index_size + this->offset_size)) - 1);
