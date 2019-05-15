@@ -59,22 +59,7 @@ typedef enum {
  * std::vector<uint16_t> d(4, 0); // 64 bytes set to 0.
  * dm_cache::cacheMessage(dm_cache::STORE, address, true, d);
  */
-struct cacheMessage {
-    oper_t op;     // Type of requested operation
-    uint16_t addr; // Address on which perform the operation
-    bool arg;      // in/out value that depends on the requested operation
 
-    /* Cache line of both load and store operation. This field must be filled in
-     * STORE and LOAD operation */
-    std::vector<uint16_t> data;
-
-    cacheMessage(oper_t op, uint16_t addr, bool arg = true,
-                 std::vector<uint16_t> data = std::vector<uint16_t>())
-        : op(op), addr(addr), arg(arg), data(data){};
-
-    // Default copy costructor
-    cacheMessage(const cacheMessage &c) = default;
-};
 
 // Information about a single cache line with get and set operation of the field
 class info_t {
@@ -94,7 +79,7 @@ class info_t {
 };
 
 
-class Cache : private module {
+class Cache {
     protected:
     const uint8_t index_size;
 
@@ -190,9 +175,8 @@ class Cache : private module {
 
     public:
 
-    Cache(char const *name, size_t size_line, size_t size_cache, int priority = 0)
-        : module(name, priority),
-          offset_size(std::log(size_line / MEM_LINE) / std::log(2) +
+    Cache(size_t size_line, size_t size_cache)
+        : offset_size(std::log(size_line / MEM_LINE) / std::log(2) +
                       MEM_OFFSET),
           index_size(std::log(size_cache / size_line) / std::log(2)),
           tag_size(ADDR_SIZE - (offset_size + index_size)),
@@ -210,48 +194,6 @@ class Cache : private module {
             //"The size of cache MUST be X times the size of cache line.");
     };
 
-    void onNotify(message *m) {
-        if (getName() != std::string(m->dest))
-            return;
-
-        message *replyMsg = new message;
-        cacheMessage *to_src = new cacheMessage(*CACHE_MESSAGE(m));
-
-        replyMsg->magic_struct = static_cast<void *>(to_src);
-        std::strcpy(replyMsg->source, m->dest);
-        std::strcpy(replyMsg->dest, m->source);
-
-        switch (CACHE_MESSAGE(m)->op) {
-        case SET_DIRTY:
-            this->set_dirty(CACHE_MESSAGE(m)->addr, CACHE_MESSAGE(m)->arg);
-            to_src->arg = true;
-            break;
-        case CHECK_VALIDITY_DIRTY:
-            to_src->arg = this->check_validity_dirty(CACHE_MESSAGE(m)->addr);
-            break;
-        case CHECK_DATA_VALIDITY:
-            to_src->arg = this->check_data_validity(CACHE_MESSAGE(m)->addr);
-            break;
-        case INVALID_LINE:
-            this->invalid_line(CACHE_MESSAGE(m)->addr);
-            break;
-        case LOAD:
-            to_src->data = this->load(CACHE_MESSAGE(m)->addr);
-            break;
-        case STORE:
-            to_src->arg =
-                this->store(CACHE_MESSAGE(m)->addr, CACHE_MESSAGE(m)->data);
-            break;
-        default:
-            break;
-        }
-
-#ifdef DM_CACHE_TESTING
-        *m = *replyMsg;
-        delete replyMsg;
-#else
-        sendWithDelay(replyMsg);
-#endif
-    }
+    
 };
 } // namespace dm_cache

@@ -51,7 +51,7 @@ void module::sendWithDelay(message* m, int delay){
 				std::cout<<"NO_PROPAGATE";
 				break;
 		case 2:
-				std::cout<<"LOAD";
+				std::cout<<"LOAD_RECALL";
 				break;
 		case 3:
 				std::cout<<"CHECK_NEXT";
