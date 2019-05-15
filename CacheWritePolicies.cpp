@@ -191,7 +191,7 @@ CWP_to_SAC* CacheWritePolicies::WP_store(SAC_to_CWP* request_struct) {
 	cout << "Cache write policies: WP_store called" << endl;
 	
 	bool data_valid = check_data_validity(request_struct->address);
-	vector<uint16_t> data_as_vector(request_struct->data, request_struct->data + size_line);
+	vector<uint16_t> data_as_vector(request_struct->data, request_struct->data + size_line/2);
 	
 	set_dirty(request_struct->address, 0);
 	bool res = store(request_struct->address, data_as_vector);
