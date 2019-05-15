@@ -221,7 +221,7 @@ CWP_to_SAC* CacheWritePolicies::WP_write_with_policies(SAC_to_CWP* request_struc
 	}
 	else { 	//MISS
 		if(hit_policy == WRITE_ALLOCATE)
-			response_struct->wr = LOAD;	
+			response_struct->wr = LOAD_RECALL;	
 		else if(hit_policy == WRITE_NO_ALLOCATE)
 			response_struct->wr = CHECK_NEXT;
 		
