@@ -5,64 +5,64 @@
 This function tests the cache for all the possible requests
 */
 void testCache(CacheWritePolicies c, const char *s){
-	SAC_to_CWP	request;
-	message m;
+	SAC_to_CWP	*request = new SAC_to_CWP;
+	message *m = new message;
 	uint16_t* d = new uint16_t[16];
 	
 	for (int i=0; i<16; ++i)
 		d[i] = 0x0000;
 	
-	m.id = 0;
-	strcpy(m.source, "test");
-	strcpy(m.dest, s);
+	m->id = 0;
+	strcpy(m->source, "test");
+	strcpy(m->dest, s);
 	
 	//reply with LOAD_RECALL in case of write_allocate (1, 2)
 	//CHECK_NEXT in case of write_no_allocate		   (3, 4)
-	request.op_type = STORE;			
-	request.address = 0x1111;
-	request.data = d;
-	m.magic_struct = (void*)&request;
-	c.onNotify(&m);
+	request->op_type = STORE;			
+	request->address = 0x1111;
+	request->data = d;
+	m->magic_struct = (void*)&request;
+	c.onNotify(m);
 	
-	request.op_type = CHECK_DIRTY;
-	request.address = 0x1111;
-	m.magic_struct = (void*)&request;
-	c.onNotify(&m);
+	request->op_type = CHECK_DIRTY;
+	request->address = 0x1111;
+	m->magic_struct = (void*)&request;
+	c.onNotify(m);
 	
 	//reply with 0
-	request.op_type = INVALID_LINE;
-	request.address = 0x1111;
-	m.magic_struct = (void*)&request;
-	c.onNotify(&m);						
+	request->op_type = INVALID_LINE;
+	request->address = 0x1111;
+	m->magic_struct = (void*)&request;
+	c.onNotify(m);						
 	
-	request.op_type = LOAD;
-	request.address = 0x1111;
-	m.magic_struct = (void*)&request;
-	c.onNotify(&m);
+	request->op_type = LOAD;
+	request->address = 0x1111;
+	m->magic_struct = (void*)&request;
+	c.onNotify(m);
 	
-	request.op_type = INVALID_LINE;
-	request.address = 0x1111;
-	m.magic_struct = (void*)&request;
-	c.onNotify(&m);
+	request->op_type = INVALID_LINE;
+	request->address = 0x1111;
+	m->magic_struct = (void*)&request;
+	c.onNotify(m);
 	
 	//reply with PROPAGATE in case of write_through (2, 4)
 	//NO_PROPAGATE in case of write_back			(1, 3)
 	d[0] = 0xFFFF;
-	request.op_type = WRITE_WITH_POLICIES;	
-	request.address = 0x1111;
-	request.data = d;
-	m.magic_struct = (void*)&request;
-	c.onNotify(&m);
+	request->op_type = WRITE_WITH_POLICIES;	
+	request->address = 0x1111;
+	request->data = d;
+	m->magic_struct = (void*)&request;
+	c.onNotify(m);
 	
-	request.op_type = CHECK_VALIDITY_DIRTY;
-	request.address = 0x1111;
-	m.magic_struct = (void*)&request;
-	c.onNotify(&m);
+	request->op_type = CHECK_VALIDITY_DIRTY;
+	request->address = 0x1111;
+	m->magic_struct = (void*)&request;
+	c.onNotify(m);
 	
-	request.op_type = CHECK_DATA_VALIDITY;
-	request.address = 0x1111;
-	m.magic_struct = (void*)&request;
-	c.onNotify(&m);
+	request->op_type = CHECK_DATA_VALIDITY;
+	request->address = 0x1111;
+	m->magic_struct = (void*)&request;
+	c.onNotify(m);
 }
 
 int main(){
