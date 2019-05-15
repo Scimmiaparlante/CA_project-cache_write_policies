@@ -17,7 +17,7 @@ enum OpType {  	SET_DIRTY,
 				WRITE_WITH_POLICIES
 			};
 			
-enum WriteResponse {PROPAGATE, NO_PROPAGATE, LOAD_RECALL, CHECK_NEXT};
+enum WriteResponse {NOT_NEEDED, PROPAGATE, NO_PROPAGATE, LOAD_RECALL, CHECK_NEXT};
 
 /* request structure. possible combinations:
 		-SET_DIRTY: set the address of the cache line to set dirty
