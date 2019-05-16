@@ -319,7 +319,7 @@ CWP_to_SAC* CacheWritePolicies::WP_write_with_policies(SAC_to_CWP* request_struc
 	//if the data is valid and it's the same block the caller wants to write on -> HIT
 	bool hit = (data_valid && resolve_tag(request_struct->address) == tag);
 	//convert the data to a vector<uint16_t>
-	vector<uint16_t> data_as_vector(request_struct->data, request_struct->data);
+	vector<uint16_t> data_as_vector(request_struct->data, request_struct->data + 1);
 	
 	if(hit) {
 		if(hit_policy == WRITE_BACK)
@@ -336,7 +336,6 @@ CWP_to_SAC* CacheWritePolicies::WP_write_with_policies(SAC_to_CWP* request_struc
 		data_read.at(request_struct->address & ~(0xffff << offset_size)) = data_as_vector.at(0);
 		//rewrite the block
 		bool res = store(request_struct->address, data_read);
-	
 		if(res == false)
 			cout << "Cache write policies: cache module returned bad dimension error" << endl;	
 	}
