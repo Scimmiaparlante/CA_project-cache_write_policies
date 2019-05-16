@@ -34,6 +34,9 @@ void CacheWritePolicies::onNotify(message *m) {
 	//Don't forget to check if the message was for me since we are in a broadcast environment
 	if(m->dest != getName())
 		return;
+
+	//print a message to log the message delivery
+	cout << "Message " << m->id << ": Sent at " << m->timestamp << ", current timestamp " << getTime() << ". My name is " << getName() << "." << endl;
 	
 	//convert the magic struct to our type
 	SAC_to_CWP* request_struct = SAC_TO_CWP(m->magic_struct);
@@ -322,9 +325,11 @@ CWP_to_SAC* CacheWritePolicies::WP_write_with_policies(SAC_to_CWP* request_struc
 		response_struct->address = request_struct->address;
 		
 		set_dirty(request_struct->address, 1);
-		//read the old data and modify the word
+		//read the old data and modify the word; then write again
 		vector<uint16_t> data_read = load(request_struct->address);
+		//modify the specific word inside the cache block
 		data_read.at(request_struct->address & ~(0xffff << offset_size)) = data_as_vector.at(0);
+		//rewrite the block
 		bool res = store(request_struct->address, data_read);
 	
 		if(res == false)
@@ -336,9 +341,9 @@ CWP_to_SAC* CacheWritePolicies::WP_write_with_policies(SAC_to_CWP* request_struc
 		else if(miss_policy == WRITE_NO_ALLOCATE)
 			response_struct->wr = CHECK_NEXT;
 		
-		if(!data_valid)
+		if(!data_valid)		//if the data is not valid, return the same address that was in the request
 			response_struct->address = request_struct->address;
-		else
+		else		//if the data is valid, return return the address of the block curerntly ocuupying the line
 			response_struct->address = (tag << index_size) | resolve_index(request_struct->address);
 	}
 	
