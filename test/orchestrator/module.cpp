@@ -47,20 +47,21 @@ void module::sendWithDelay(message* m, int delay){
 	std::cout<<"Response code: ";
 
 	switch(((CWP_to_SAC*)(m->magic_struct))->wr) {
-		case 0:
-				std::cout<<"PROPAGATE";
-				break;
-		case 1:
-				std::cout<<"NO_PROPAGATE";
-				break;
-		case 2:
-				std::cout<<"LOAD_RECALL";
-				break;
-		case 3:
-				std::cout<<"CHECK_NEXT";
-				break;
-		default:
-				break;
+		case PROPAGATE:
+						std::cout<<"PROPAGATE";
+						break;
+		case NO_PROPAGATE:
+						std::cout<<"NO_PROPAGATE";
+						break;
+		case LOAD_RECALL:
+						std::cout<<"LOAD_RECALL";
+						break;
+		case CHECK_NEXT:
+						std::cout<<"CHECK_NEXT";
+						break;
+		case NOT_NEEDED:
+						std::cout<<"NOT_NEEDED";
+						break;
 	}
 
 	std::cout<<std::endl <<"Data: ";
@@ -69,7 +70,7 @@ void module::sendWithDelay(message* m, int delay){
 	else
 		std::cout<<((CWP_to_SAC*)(m->magic_struct))->data;
 
-	std::cout<<std::endl;
+	std::cout<<std::endl <<std::endl;
 	
 	if (((CWP_to_SAC*)(m->magic_struct))->data != NULL)
 		delete ((CWP_to_SAC*)(m->magic_struct))->data;
