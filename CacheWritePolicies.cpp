@@ -8,26 +8,43 @@
 
 using namespace std;
 
+/**
+Constructor of the class
 
+@param name 		Name of the Cache write policies module for the orchestrator
+@param priority		Priority of the Cache write policies module for the orchestrator
+@param cache_size 	size of the cache module to instanciate(in bytes)
+@param line_size	sieze of a line of cache (in bytes)
+@param hp			miss policy to be followed by the module
+@param mp			hit policy to be followed by the module
+*/
 CacheWritePolicies::CacheWritePolicies(string name, int priority, uint16_t cache_size, uint16_t line_size, HIT_POLICY hp, MISS_POLICY mp) : Cache(line_size, cache_size), module(name, priority) {
 	hit_policy = hp;
 	miss_policy = mp;
 }
 
 
+/**
+Function that is called by the orchestrator whenever a message arrives
+
+@param m	The structure is the message that is sent by the module that wants to communicate with us
+*/
 void CacheWritePolicies::onNotify(message *m) {
 	
 	//Don't forget to check if the message was for me since we are in a broadcast environment
 	if(m->dest != getName())
 		return;
-		
+
+	//print a message to log the message delivery
 	cout << "Message " << m->id << ": Sent at " << m->timestamp << ", current timestamp " << getTime() << ". My name is " << getName() << "." << endl;
 	
+	//convert the magic struct to our type
 	SAC_to_CWP* request_struct = SAC_TO_CWP(m->magic_struct);
 	string sender_name = string(m->source);
-	//allocate the space for the pointer to the response magic struct
+	//allocate the pointer to the response magic struct which will be created by the functions handling each particular case
 	CWP_to_SAC* response_struct = NULL;
 	
+	//depending on the operation to perform, we call a specific function (that creates the response struct according to its actions)
 	switch(request_struct->op_type) {
 		
 		case OpType::SET_DIRTY:
@@ -56,7 +73,9 @@ void CacheWritePolicies::onNotify(message *m) {
 			break;
 	}
 	
+	#ifdef DEBUG
 	cout << "Cache write policies: Operation completed - sending reply..." << endl;
+	#endif
 	
 	// delete the received message and structure (!!!!! CHECK IF IT MUST BE DONE THIS WAY)
 	delete request_struct;
@@ -65,14 +84,21 @@ void CacheWritePolicies::onNotify(message *m) {
 	//create the response message
 	message* response_message = WP_create_message(sender_name);
 	response_message->magic_struct = (void*)response_struct;
-	
+	//send the response message
 	sendWithDelay(response_message, CWR_RESPONSE_DELAY);
 }
 
+/**
+Function which handles the set_dirty functionality
 
+@param request_struct	The structure containing the data to fulfill the request
+@return 				The pointer to the CWP_to_SAC magic_struct to be included in the response
+*/
 CWP_to_SAC* CacheWritePolicies::WP_set_dirty(SAC_to_CWP* request_struct) {
 	
+	#ifdef DEBUG
 	cout << "Cache write policies: WP_set_dirty called" << endl;
+	#endif
 	
 	//check if the block is valid
 	bool data_valid = check_data_validity(request_struct->address);
@@ -90,10 +116,19 @@ CWP_to_SAC* CacheWritePolicies::WP_set_dirty(SAC_to_CWP* request_struct) {
 	return response_struct;
 }
 
+/**
+Function which handles the check_validity_dirty functionality
+
+@param request_struct	The structure containing the data to fulfill the request
+@return 				The pointer to the CWP_to_SAC magic_struct to be included in the response
+*/
 CWP_to_SAC* CacheWritePolicies::WP_check_validity_dirty(SAC_to_CWP* request_struct) {
 	
+	#ifdef DEBUG
 	cout << "Cache write policies: WP_check_validity_dirty called" << endl;
+	#endif
 	
+	//get the validity of the dta
 	bool data_valid_dirty = check_validity_dirty(request_struct->address);
 	
 	//create the reply structure
@@ -106,9 +141,18 @@ CWP_to_SAC* CacheWritePolicies::WP_check_validity_dirty(SAC_to_CWP* request_stru
 	return response_struct;
 }
 
+
+/**
+Function which handles the check_validity_dirty functionality
+
+@param request_struct	The structure containing the data to fulfill the request
+@return 				The pointer to the CWP_to_SAC magic_struct to be included in the response
+*/
 CWP_to_SAC* CacheWritePolicies::WP_check_data_validity(SAC_to_CWP* request_struct) {
 	
+	#ifdef DEBUG
 	cout << "Cache write policies: WP_check_data_validity called" << endl;
+	#endif
 	
 	bool data_valid = check_data_validity(request_struct->address);
 	
@@ -122,9 +166,17 @@ CWP_to_SAC* CacheWritePolicies::WP_check_data_validity(SAC_to_CWP* request_struc
 	return response_struct;
 }
 
+/**
+Function which handles the check_dirty functionality
+
+@param request_struct	The structure containing the data to fulfill the request
+@return 				The pointer to the CWP_to_SAC magic_struct to be included in the response
+*/
 CWP_to_SAC* CacheWritePolicies::WP_check_dirty(SAC_to_CWP* request_struct) {
 	
+	#ifdef DEBUG
 	cout << "Cache write policies: WP_check_dirty called" << endl;
+	#endif
 	
 	bool dirty = check_dirty(request_struct->address);
 	
@@ -138,13 +190,21 @@ CWP_to_SAC* CacheWritePolicies::WP_check_dirty(SAC_to_CWP* request_struct) {
 	return response_struct;
 }
 
+/**
+Function which handles the invalid_line functionality
 
+@param request_struct	The structure containing the data to fulfill the request
+@return 				The pointer to the CWP_to_SAC magic_struct to be included in the response
+*/
 CWP_to_SAC* CacheWritePolicies::WP_invalid_line(SAC_to_CWP* request_struct) {
 	
+	#ifdef DEBUG
 	cout << "Cache write policies: WP_invalid_line called" << endl;
+	#endif
 	
 	bool data_valid = check_data_validity(request_struct->address);
 	
+	//invalid the line if it was valid
 	if(data_valid)
 		invalid_line(request_struct->address);
 	
@@ -158,9 +218,17 @@ CWP_to_SAC* CacheWritePolicies::WP_invalid_line(SAC_to_CWP* request_struct) {
 	return response_struct;
 }
 
+/**
+Function which handles the load functionality
+
+@param request_struct	The structure containing the data to fulfill the request
+@return 				The pointer to the CWP_to_SAC magic_struct to be included in the response
+*/
 CWP_to_SAC* CacheWritePolicies::WP_load(SAC_to_CWP* request_struct) {
 	
+	#ifdef DEBUG
 	cout << "Cache write policies: WP_load called" << endl;
+	#endif
 	
 	bool data_valid = check_data_validity(request_struct->address);
 	uint16_t tag = get_tag(request_struct->address);
@@ -174,9 +242,10 @@ CWP_to_SAC* CacheWritePolicies::WP_load(SAC_to_CWP* request_struct) {
 	if(hit) {
 		vector<uint16_t> data_read = load(request_struct->address);
 		response_struct->data = new uint16_t[size_line];
+		//convert the data to a uint16_t[]
 		copy(data_read.begin(), data_read.end(), response_struct->data);
 	}
-	else {
+	else { //miss
 		response_struct->data = NULL;
 	}
 	
@@ -186,14 +255,25 @@ CWP_to_SAC* CacheWritePolicies::WP_load(SAC_to_CWP* request_struct) {
 	return response_struct;
 }
 
+/**
+Function which handles the store functionality
+
+@param request_struct	The structure containing the data to fulfill the request
+@return 				The pointer to the CWP_to_SAC magic_struct to be included in the response
+*/
 CWP_to_SAC* CacheWritePolicies::WP_store(SAC_to_CWP* request_struct) {
 	
+	#ifdef DEBUG
 	cout << "Cache write policies: WP_store called" << endl;
+	#endif
 	
 	bool data_valid = check_data_validity(request_struct->address);
+	//convert the data to a vector<uint16_t>
 	vector<uint16_t> data_as_vector(request_struct->data, request_struct->data + size_line/2);
 	
+	//reset the dirty bit (the functionality is used by the replacement)
 	set_dirty(request_struct->address, 0);
+	//store the line of cache
 	bool res = store(request_struct->address, data_as_vector);
 	
 	if(res == false)
@@ -212,19 +292,28 @@ CWP_to_SAC* CacheWritePolicies::WP_store(SAC_to_CWP* request_struct) {
 	return response_struct;
 }
 
+/**
+Function which handles the write_with_policies functionality
 
+@param request_struct	The structure containing the data to fulfill the request
+@return 				The pointer to the CWP_to_SAC magic_struct to be included in the response
+*/
 CWP_to_SAC* CacheWritePolicies::WP_write_with_policies(SAC_to_CWP* request_struct) {
-	
+
+	#ifdef DEBUG
 	cout << "Cache write policies: WP_write_with_policies called" << endl;
+	#endif
 	
 	//create the reply structure
 	CWP_to_SAC* response_struct = new CWP_to_SAC();
 
 	bool data_valid = check_data_validity(request_struct->address);
+	//get the tag of the data currently present in the line of cache
 	uint16_t tag = get_tag(request_struct->address);
 	
 	//if the data is valid and it's the same block the caller wants to write on -> HIT
 	bool hit = (data_valid && resolve_tag(request_struct->address) == tag);
+	//convert the data to a vector<uint16_t>
 	vector<uint16_t> data_as_vector(request_struct->data, request_struct->data);
 	
 	if(hit) {
@@ -265,10 +354,16 @@ CWP_to_SAC* CacheWritePolicies::WP_write_with_policies(SAC_to_CWP* request_struc
 	return response_struct;
 }
 
+/**
+Function which creares the message structure and inserts the data required for the transmission
 
+@param destination 		The name of the dstination module
+@return 				pointer to the message struct created
+*/
 message* CacheWritePolicies::WP_create_message(string destination) {
 
 	message* myMessage = new message();
+	
 	myMessage->valid = 1;
 	myMessage->timestamp = getTime();
 	strcpy(myMessage->source, getName().c_str());
