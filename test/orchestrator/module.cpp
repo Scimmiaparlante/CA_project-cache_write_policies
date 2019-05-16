@@ -43,7 +43,7 @@ int module::getTime(){
 void module::sendWithDelay(message* m, int delay){
 	std::cout<<"Response sent by " <<m->source <<" to " <<m->dest <<" with delay " <<delay <<std::endl;
 	std::cout<<"Hit flag: " <<((CWP_to_SAC*)(m->magic_struct))->hit_flag <<std::endl;
-	std::cout<<"Address: " <<((CWP_to_SAC*)(m->magic_struct))->address <<std::endl;
+	std::cout<<"Address: " << std::hex <<((CWP_to_SAC*)(m->magic_struct))->address <<std::endl;
 	std::cout<<"Response code: ";
 
 	switch(((CWP_to_SAC*)(m->magic_struct))->wr) {
@@ -68,7 +68,8 @@ void module::sendWithDelay(message* m, int delay){
 	if (((CWP_to_SAC*)(m->magic_struct))->data == NULL)
 		std::cout<<"NULL";
 	else
-		std::cout<<((CWP_to_SAC*)(m->magic_struct))->data;
+		for (int i = 0; i < 16; ++i)
+			std::cout<< std::hex <<((CWP_to_SAC*)(m->magic_struct))->data[i];
 
 	std::cout<<std::endl <<std::endl;
 	
