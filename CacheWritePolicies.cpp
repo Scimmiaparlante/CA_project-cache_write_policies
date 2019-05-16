@@ -18,7 +18,7 @@ Constructor of the class
 @param hp			miss policy to be followed by the module
 @param mp			hit policy to be followed by the module
 */
-CacheWritePolicies::CacheWritePolicies(string name, int priority, uint16_t cache_size, uint16_t line_size, HIT_POLICY hp, MISS_POLICY mp) : Cache(line_size, cache_size), module(name, priority) {
+CacheWritePolicies::CacheWritePolicies(string name, int priority, uint16_t cache_size, uint16_t line_size, HIT_POLICY hp, MISS_POLICY mp) : Cache(line_size*MEM_LINE/2, cache_size*MEM_LINE/2), module(name, priority) {
 	hit_policy = hp;
 	miss_policy = mp;
 }
@@ -269,7 +269,7 @@ CWP_to_SAC* CacheWritePolicies::WP_store(SAC_to_CWP* request_struct) {
 	
 	bool data_valid = check_data_validity(request_struct->address);
 	//convert the data to a vector<uint16_t>
-	vector<uint16_t> data_as_vector(request_struct->data, request_struct->data + size_line/2);
+	vector<uint16_t> data_as_vector(request_struct->data, request_struct->data + size_line/MEM_LINE);
 	
 	//reset the dirty bit (the functionality is used by the replacement)
 	set_dirty(request_struct->address, 0);
