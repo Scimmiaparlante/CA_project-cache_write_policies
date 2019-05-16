@@ -54,7 +54,7 @@ void CacheWritePolicies::onNotify(message *m) {
 			break;
 		case OpType::CHECK_DIRTY:
 			response_struct = WP_check_dirty(request_struct);
-			break
+			break;
 		case OpType::CHECK_VALIDITY_DIRTY:
 			response_struct = WP_check_validity_dirty(request_struct);
 			break;
