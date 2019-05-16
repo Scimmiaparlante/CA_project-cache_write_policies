@@ -1,5 +1,5 @@
 Response sent by test to cache1 with delay 10
-Hit flag: 
+Hit flag: 0
 Address: 0x1111
 Response code: NOT_NEEDED
 Data: NULL
@@ -14,46 +14,40 @@ Response sent by test to cache1 with delay 10
 Hit flag: 1
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: NULL
+Data: 0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F
 
 Response sent by test to cache1 with delay 10
-Hit flag: 
-Address: 0x1111
-Response code: NOT_NEEDED
-Data: 
-
-Response sent by test to cache1 with delay 10
-Hit flag: 
+Hit flag: 1
 Address: 0x1111
 Response code: NO_PROPAGATE
-Data: 
+Data: NULL
 
 Response sent by test to cache1 with delay 10
 Hit flag: 1
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: 
+Data: NULL
 
 Response sent by test to cache1 with delay 10
-Hit flag: 
+Hit flag: 0
 Address: 0x1111
 Response code: LOAD_RECALL
-Data: 
+Data: NULL
 
 Response sent by test to cache1 with delay 10
-Hit flag: 
+Hit flag: 0
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: 
+Data: NULL
 
 Response sent by test to cache1 with delay 10
-Hit flag: 
+Hit flag: 0
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: 
+Data: NULL
 
 Response sent by test to cache2 with delay 10
-Hit flag: 
+Hit flag: 0
 Address: 0x1111
 Response code: NOT_NEEDED
 Data: NULL
@@ -68,46 +62,40 @@ Response sent by test to cache2 with delay 10
 Hit flag: 1
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: NULL
+Data: 0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F
 
 Response sent by test to cache2 with delay 10
-Hit flag: 
-Address: 0x1111
-Response code: NOT_NEEDED
-Data: 
-
-Response sent by test to cache2 with delay 10
-Hit flag: 
+Hit flag: 1
 Address: 0x1111
 Response code: PROPAGATE
-Data: 
+Data: NULL
 
 Response sent by test to cache2 with delay 10
 Hit flag: 1
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: 
+Data: NULL
 
 Response sent by test to cache2 with delay 10
-Hit flag: 
+Hit flag: 0
 Address: 0x1111
 Response code: LOAD_RECALL
-Data: 
+Data: NULL
 
 Response sent by test to cache2 with delay 10
-Hit flag: 
+Hit flag: 0
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: 
+Data: NULL
 
 Response sent by test to cache2 with delay 10
-Hit flag: 
+Hit flag: 0
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: 
+Data: NULL
 
 Response sent by test to cache3 with delay 10
-Hit flag: 
+Hit flag: 0
 Address: 0x1111
 Response code: NOT_NEEDED
 Data: NULL
@@ -122,46 +110,40 @@ Response sent by test to cache3 with delay 10
 Hit flag: 1
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: NULL
+Data: 0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F
 
 Response sent by test to cache3 with delay 10
-Hit flag: 
-Address: 0x1111
-Response code: NOT_NEEDED
-Data: 
-
-Response sent by test to cache3 with delay 10
-Hit flag: 
+Hit flag: 1
 Address: 0x1111
 Response code: NO_PROPAGATE
-Data: 
+Data: NULL
 
 Response sent by test to cache3 with delay 10
 Hit flag: 1
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: 
+Data: NULL
 
 Response sent by test to cache3 with delay 10
-Hit flag: 
+Hit flag: 0
 Address: 0x1111
 Response code: CHECK_NEXT
-Data: 
+Data: NULL
 
 Response sent by test to cache3 with delay 10
-Hit flag: 
+Hit flag: 0
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: 
+Data: NULL
 
 Response sent by test to cache3 with delay 10
-Hit flag: 
+Hit flag: 0
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: 
+Data: NULL
 
 Response sent by test to cache4 with delay 10
-Hit flag: 
+Hit flag: 0
 Address: 0x1111
 Response code: NOT_NEEDED
 Data: NULL
@@ -176,40 +158,34 @@ Response sent by test to cache4 with delay 10
 Hit flag: 1
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: NULL
+Data: 0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F0x000F
 
 Response sent by test to cache4 with delay 10
-Hit flag: 
-Address: 0x1111
-Response code: NOT_NEEDED
-Data: 
-
-Response sent by test to cache4 with delay 10
-Hit flag: 
+Hit flag: 1
 Address: 0x1111
 Response code: PROPAGATE
-Data: 
+Data: NULL
 
 Response sent by test to cache4 with delay 10
 Hit flag: 1
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: 
+Data: NULL
 
 Response sent by test to cache4 with delay 10
-Hit flag: 
+Hit flag: 0
 Address: 0x1111
 Response code: CHECK_NEXT
-Data: 
+Data: NULL
 
 Response sent by test to cache4 with delay 10
-Hit flag: 
+Hit flag: 0
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: 
+Data: NULL
 
 Response sent by test to cache4 with delay 10
-Hit flag: 
+Hit flag: 0
 Address: 0x1111
 Response code: NOT_NEEDED
-Data: 
+Data: NULL
