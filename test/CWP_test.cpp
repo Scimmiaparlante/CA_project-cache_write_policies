@@ -24,20 +24,23 @@ void testCache(CacheWritePolicies c, const char *s){
 
 	request = new SAC_to_CWP;
 	m = new message;
-	d = new uint16_t[16];
-	for (int i=0; i<16; ++i)
-		d[i] = 0x000F;
 
-	request->op_type = CHECK_DIRTY;
+	m->id = 0;
+	strcpy(m->source, "test");
+	strcpy(m->dest, s);
+
+	request->op_type = OpType::CHECK_DIRTY;
 	request->address = 0x1111;
 	m->magic_struct = (void*)request;
 	c.onNotify(m);
 
 	request = new SAC_to_CWP;
 	m = new message;
-	d = new uint16_t[16];
-	for (int i=0; i<16; ++i)
-		d[i] = 0x000F;
+
+	m->id = 0;
+	strcpy(m->source, "test");
+	strcpy(m->dest, s);
+
 	request->op_type = LOAD;
 	request->address = 0x1111;
 	m->magic_struct = (void*)request;
@@ -48,6 +51,10 @@ void testCache(CacheWritePolicies c, const char *s){
 	d = new uint16_t[16];
 	for (int i=0; i<16; ++i)
 		d[i] = 0x000F;
+
+		m->id = 0;
+		strcpy(m->source, "test");
+		strcpy(m->dest, s);
 	//reply with PROPAGATE in case of write_through (2, 4)
 	//NO_PROPAGATE in case of write_back		    (1, 3)
 	d[0] = 0xFFFF;
@@ -59,9 +66,10 @@ void testCache(CacheWritePolicies c, const char *s){
 
 	request = new SAC_to_CWP;
 	m = new message;
-	d = new uint16_t[16];
-	for (int i=0; i<16; ++i)
-		d[i] = 0x000F;
+		m->id = 0;
+		strcpy(m->source, "test");
+		strcpy(m->dest, s);
+
 	request->op_type = INVALID_LINE;
 	request->address = 0x1111;
 	m->magic_struct = (void*)request;
@@ -72,6 +80,13 @@ void testCache(CacheWritePolicies c, const char *s){
 	d = new uint16_t[16];
 	for (int i=0; i<16; ++i)
 		d[i] = 0x000F;
+
+
+		m->id = 0;
+		strcpy(m->source, "test");
+		strcpy(m->dest, s);
+
+
 	//reply with LOAD_RECALL in case of write_allocate (1, 2)
 	//CHECK_NEXT in case of write_no_allocate		   (3, 4)
 	d[0] = 0xFFFF;
@@ -83,9 +98,11 @@ void testCache(CacheWritePolicies c, const char *s){
 
 	request = new SAC_to_CWP;
 	m = new message;
-	d = new uint16_t[16];
-	for (int i=0; i<16; ++i)
-		d[i] = 0x000F;
+
+		m->id = 0;
+		strcpy(m->source, "test");
+		strcpy(m->dest, s);
+
 	request->op_type = CHECK_VALIDITY_DIRTY;
 	request->address = 0x1111;
 	m->magic_struct = (void*)request;
@@ -93,9 +110,11 @@ void testCache(CacheWritePolicies c, const char *s){
 
 	request = new SAC_to_CWP;
 	m = new message;
-	d = new uint16_t[16];
-	for (int i=0; i<16; ++i)
-		d[i] = 0x000F;
+
+		m->id = 0;
+		strcpy(m->source, "test");
+		strcpy(m->dest, s);
+
 	request->op_type = CHECK_DATA_VALIDITY;
 	request->address = 0x1111;
 	m->magic_struct = (void*)request;
