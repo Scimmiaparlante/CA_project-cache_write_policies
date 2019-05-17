@@ -5,7 +5,7 @@ Response code: NOT_NEEDED
 Data: NULL
 
 Response sent by test to cache1 with delay 10
-Hit flag: 1
+Hit flag: 0
 Address: 1111
 Response code: NOT_NEEDED
 Data: NULL
@@ -53,7 +53,7 @@ Response code: NOT_NEEDED
 Data: NULL
 
 Response sent by test to cache2 with delay 10
-Hit flag: 1
+Hit flag: 0
 Address: 1111
 Response code: NOT_NEEDED
 Data: NULL
@@ -101,7 +101,7 @@ Response code: NOT_NEEDED
 Data: NULL
 
 Response sent by test to cache3 with delay 10
-Hit flag: 1
+Hit flag: 0
 Address: 1111
 Response code: NOT_NEEDED
 Data: NULL
@@ -149,7 +149,7 @@ Response code: NOT_NEEDED
 Data: NULL
 
 Response sent by test to cache4 with delay 10
-Hit flag: 1
+Hit flag: 0
 Address: 1111
 Response code: NOT_NEEDED
 Data: NULL
