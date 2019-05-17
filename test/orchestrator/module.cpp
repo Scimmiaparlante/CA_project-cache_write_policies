@@ -2,6 +2,7 @@
 #include <vector>
 #include "../../SetAssociative_WritePolicies_message.h"
 #include <iostream>
+#include <iomanip>
 
 
 #include "module.h"
@@ -68,8 +69,8 @@ void module::sendWithDelay(message* m, int delay){
 	if (((CWP_to_SAC*)(m->magic_struct))->data == NULL)
 		std::cout<<"NULL";
 	else
-		for (int i = 0; i < 16; ++i)
-			std::cout<< std::hex <<((CWP_to_SAC*)(m->magic_struct))->data[i];
+		for (int i = 0; i < 32; ++i)
+			std::cout<< std::hex << std::setfill('0') << std::setw(4) << ((CWP_to_SAC*)(m->magic_struct))->data[i];
 
 	std::cout<<std::endl <<std::endl <<std::dec;
 	

@@ -342,7 +342,7 @@ CWP_to_SAC* CacheWritePolicies::WP_write_with_policies(SAC_to_CWP* request_struc
 		else if(miss_policy == WRITE_NO_ALLOCATE)
 			response_struct->wr = CHECK_NEXT;
 		
-		bool data_valid = check_valid(request_struct->address);
+		bool data_valid = check_used(request_struct->address);
 		
 		if(!data_valid)		//if the data is not valid, return the same address that was in the request
 			response_struct->address = request_struct->address;

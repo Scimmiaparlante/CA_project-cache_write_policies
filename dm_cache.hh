@@ -127,7 +127,7 @@ class Cache {
 	
 	// NOTE. Add on the original file
     // Check if the data at a given address is valid
-    bool check_valid(uint16_t addr) {
+    bool check_used(uint16_t addr) {
         return this->tag_memory.at(this->resolve_index(addr)).get_validity();
     }
 
