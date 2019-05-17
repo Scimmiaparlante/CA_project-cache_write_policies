@@ -45,7 +45,7 @@ void CacheWritePolicies::onNotify(message *m) {
 	string sender_name = string(m->source);
 	//allocate the pointer to the response magic struct which will be created by the functions handling each particular case
 	CWP_to_SAC* response_struct = NULL;
-	
+
 	//depending on the operation to perform, we call a specific function (that creates the response struct according to its actions)
 	switch(request_struct->op_type) {
 		
@@ -182,7 +182,7 @@ CWP_to_SAC* CacheWritePolicies::WP_check_dirty(SAC_to_CWP* request_struct) {
 	#ifdef DEBUG
 	cout << "Cache write policies: WP_check_dirty called" << endl;
 	#endif
-	
+
 	bool dirty = check_dirty(request_struct->address);
 	
 	//create the reply structure
@@ -235,11 +235,9 @@ CWP_to_SAC* CacheWritePolicies::WP_load(SAC_to_CWP* request_struct) {
 	cout << "Cache write policies: WP_load called" << endl;
 	#endif
 	
-	bool data_valid = check_data_validity(request_struct->address);
-	uint16_t tag = get_tag(request_struct->address);
 	//if the data is valid and it's the same block the caller wants to write on -> HIT
-	bool hit = (data_valid && resolve_tag(request_struct->address) == tag);
-	
+	bool hit = check_data_validity(request_struct->address);
+
 	//create the reply structure
 	CWP_to_SAC* response_struct = new CWP_to_SAC();
 	response_struct->hit_flag = hit;
@@ -275,12 +273,12 @@ CWP_to_SAC* CacheWritePolicies::WP_store(SAC_to_CWP* request_struct) {
 	bool data_valid = check_data_validity(request_struct->address);
 	//convert the data to a vector<uint16_t>
 	vector<uint16_t> data_as_vector(request_struct->data, request_struct->data + size_line/MEM_LINE);
-	
+
 	//reset the dirty bit (the functionality is used by the replacement)
 	set_dirty(request_struct->address, 0);
 	//store the line of cache
 	bool res = store(request_struct->address, data_as_vector);
-	
+
 	if(res == false)
 		cout << "Cache module returned bad dimension error" << endl;	
 
@@ -293,7 +291,7 @@ CWP_to_SAC* CacheWritePolicies::WP_store(SAC_to_CWP* request_struct) {
 	response_struct->data = NULL;
 	response_struct->address = request_struct->address;
 	response_struct->wr = NOT_NEEDED;
-	
+		
 	return response_struct;
 }
 
@@ -312,12 +310,11 @@ CWP_to_SAC* CacheWritePolicies::WP_write_with_policies(SAC_to_CWP* request_struc
 	//create the reply structure
 	CWP_to_SAC* response_struct = new CWP_to_SAC();
 
-	bool data_valid = check_data_validity(request_struct->address);
+	//if the data is valid and it's the same block the caller wants to write on -> HIT
+	bool hit = check_data_validity(request_struct->address);
 	//get the tag of the data currently present in the line of cache
 	uint16_t tag = get_tag(request_struct->address);
 	
-	//if the data is valid and it's the same block the caller wants to write on -> HIT
-	bool hit = (data_valid && resolve_tag(request_struct->address) == tag);
 	//convert the data to a vector<uint16_t>
 	vector<uint16_t> data_as_vector(request_struct->data, request_struct->data + 1);
 	
@@ -336,7 +333,6 @@ CWP_to_SAC* CacheWritePolicies::WP_write_with_policies(SAC_to_CWP* request_struc
 		data_read.at(request_struct->address & ~(0xffffffff << offset_size)) = data_as_vector.at(0);
 		//rewrite the block
 		bool res = store(request_struct->address, data_read);
-	
 		if(res == false)
 			cout << "Cache write policies: cache module returned bad dimension error" << endl;	
 	}
@@ -346,9 +342,11 @@ CWP_to_SAC* CacheWritePolicies::WP_write_with_policies(SAC_to_CWP* request_struc
 		else if(miss_policy == WRITE_NO_ALLOCATE)
 			response_struct->wr = CHECK_NEXT;
 		
+		bool data_valid = check_valid(request_struct->address);
+		
 		if(!data_valid)		//if the data is not valid, return the same address that was in the request
 			response_struct->address = request_struct->address;
-		else		//if the data is valid, return return the address of the block curerntly ocuupying the line
+		else		//if the data is valid, return return the address of the block curerntly occupying the line
 			response_struct->address = (tag << index_size) | resolve_index(request_struct->address);
 	}
 	

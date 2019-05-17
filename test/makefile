@@ -2,7 +2,7 @@
 
 CXX = g++
 
-CXXFLAGS = -Wall -g -std=c++11 -DDEBUG
+CXXFLAGS = -Wall -g -std=c++11
 
 test: CWP_test CacheWritePolicies orchestrator/module.o
 	$(CXX) -Wall CWP_test.o orchestrator/module.o CacheWritePolicies.o -o test
@@ -15,6 +15,10 @@ CacheWritePolicies: CacheWritePolicies.cpp CacheWritePolicies.h dm_cache.hh SetA
 
 orchestrator/module.o:  orchestrator/module.cpp
 	$(CXX) $(CXXFLAGS) -c orchestrator/module.cpp -o orchestrator/module.o
+
+debug: CXXFLAGS += -DDEBUG
+debug: test
+
 
 clean:
 	rm *.o test orchestrator/module.o
