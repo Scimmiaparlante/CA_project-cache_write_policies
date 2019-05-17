@@ -120,8 +120,14 @@ class Cache {
     }
 
     // NOTE. Add on the original file
-    // Check if the data at a given address is valid
+    // Check if the data at a given address is dirty
     bool check_dirty(uint16_t addr){
+        return this->tag_memory.at(this->resolve_index(addr)).get_dirty();
+    }
+	
+	// NOTE. Add on the original file
+    // Check if the data at a given address is valid
+    bool check_valid(uint16_t addr) {
         return this->tag_memory.at(this->resolve_index(addr)).get_validity();
     }
 
