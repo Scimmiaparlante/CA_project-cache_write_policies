@@ -4,9 +4,9 @@
 void store(CacheWritePolicies *c, const char *s){
 	SAC_to_CWP	*request = new SAC_to_CWP;
 	message *m = new message;
-	uint16_t* d = new uint16_t[16];
+	uint16_t* d = new uint16_t[32];
 
-	for (int i=0; i<16; ++i)
+	for (int i=0; i<32; ++i)
 		d[i] = 0x000F;
 
 	m->id = 0;
@@ -51,17 +51,14 @@ void load(CacheWritePolicies *c, const char *s){
 void write(CacheWritePolicies *c, const char *s){
 	SAC_to_CWP	*request = new SAC_to_CWP;
 	message *m = new message;
-	uint16_t* d = new uint16_t[16];
-
-	for (int i=0; i<16; ++i)
-		d[i] = 0x000F;
+	uint16_t* d =  new uint16_t(0xAAFF);
 
 	m->id = 0;
 	strcpy(m->source, "test");
 	strcpy(m->dest, s);
 	//reply with PROPAGATE in case of write_through (2, 4)
 	//NO_PROPAGATE in case of write_back		    (1, 3)
-	d[0] = 0xFFFF;
+
 	request->op_type = WRITE_WITH_POLICIES;
 	request->address = 0x1111;
 	request->data = d;
@@ -116,6 +113,7 @@ void testCache(CacheWritePolicies *c, const char *s){
 	check_dirty(c, s);
 	load(c, s);
 	write(c, s);
+	load(c,s);
 	invalidate(c, s);
 	write(c, s);
 	check_validity(c, s);
