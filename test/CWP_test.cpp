@@ -1,10 +1,7 @@
 #include<cstring>
 #include "CacheWritePolicies.h"
 
-/*
-This function tests the cache for all the possible requests
-*/
-void testCache(CacheWritePolicies c, const char *s){
+void store(CacheWritePolicies c, const char *s){
 	SAC_to_CWP	*request = new SAC_to_CWP;
 	message *m = new message;
 	uint16_t* d = new uint16_t[16];
@@ -21,9 +18,11 @@ void testCache(CacheWritePolicies c, const char *s){
 	request->data = d;
 	m->magic_struct = (void*)request;
 	c.onNotify(m);
+}
 
-	request = new SAC_to_CWP;
-	m = new message;
+void check_dirty(CacheWritePolicies c, const char *s){
+	SAC_to_CWP	*request = new SAC_to_CWP;
+	message *m = new message;
 
 	m->id = 0;
 	strcpy(m->source, "test");
@@ -33,9 +32,11 @@ void testCache(CacheWritePolicies c, const char *s){
 	request->address = 0x1111;
 	m->magic_struct = (void*)request;
 	c.onNotify(m);
+}
 
-	request = new SAC_to_CWP;
-	m = new message;
+void load(CacheWritePolicies c, const char *s){
+	SAC_to_CWP	*request = new SAC_to_CWP;
+	message *m = new message;
 
 	m->id = 0;
 	strcpy(m->source, "test");
@@ -45,10 +46,13 @@ void testCache(CacheWritePolicies c, const char *s){
 	request->address = 0x1111;
 	m->magic_struct = (void*)request;
 	c.onNotify(m);
+}
 
-	request = new SAC_to_CWP;
-	m = new message;
-	d = new uint16_t[16];
+void write(CacheWritePolicies c, const char *s){
+	SAC_to_CWP	*request = new SAC_to_CWP;
+	message *m = new message;
+	uint16_t* d = new uint16_t[16];
+
 	for (int i=0; i<16; ++i)
 		d[i] = 0x000F;
 
@@ -63,9 +67,12 @@ void testCache(CacheWritePolicies c, const char *s){
 	request->data = d;
 	m->magic_struct = (void*)request;
 	c.onNotify(m);
+}
 
-	request = new SAC_to_CWP;
-	m = new message;
+void invalidate(CacheWritePolicies c, const char *s){
+	SAC_to_CWP	*request = new SAC_to_CWP;
+	message *m = new message;
+	
 	m->id = 0;
 	strcpy(m->source, "test");
 	strcpy(m->dest, s);
@@ -74,31 +81,11 @@ void testCache(CacheWritePolicies c, const char *s){
 	request->address = 0x1111;
 	m->magic_struct = (void*)request;
 	c.onNotify(m);
-
-	request = new SAC_to_CWP;
-	m = new message;
-	d = new uint16_t[16];
-	for (int i=0; i<16; ++i)
-		d[i] = 0x000F;
-
-
-	m->id = 0;
-	strcpy(m->source, "test");
-	strcpy(m->dest, s);
-
-
-	//reply with LOAD_RECALL in case of write_allocate (1, 2)
-	//CHECK_NEXT in case of write_no_allocate		   (3, 4)
-	d[0] = 0xFFFF;
-	request->op_type = WRITE_WITH_POLICIES;
-	request->address = 0x1111;
-	request->data = d;
-	m->magic_struct = (void*)request;
-	c.onNotify(m);
-
-	request = new SAC_to_CWP;
-	m = new message;
-
+}
+void check_validity(CacheWritePolicies c, const char *s){
+	SAC_to_CWP	*request = new SAC_to_CWP;
+	message *m = new message;
+	
 	m->id = 0;
 	strcpy(m->source, "test");
 	strcpy(m->dest, s);
@@ -107,10 +94,11 @@ void testCache(CacheWritePolicies c, const char *s){
 	request->address = 0x1111;
 	m->magic_struct = (void*)request;
 	c.onNotify(m);
-
-	request = new SAC_to_CWP;
-	m = new message;
-
+} 
+void check_data_validity(CacheWritePolicies c, const char *s){
+	SAC_to_CWP	*request = new SAC_to_CWP;
+	message *m = new message;
+	
 	m->id = 0;
 	strcpy(m->source, "test");
 	strcpy(m->dest, s);
@@ -119,6 +107,19 @@ void testCache(CacheWritePolicies c, const char *s){
 	request->address = 0x1111;
 	m->magic_struct = (void*)request;
 	c.onNotify(m);
+}
+/*
+This function tests the cache for all the possible requests
+*/
+void testCache(CacheWritePolicies c, const char *s){
+	store(c, s);
+	check_dirty(c, s);
+	load(c, s);
+	write(c, s);
+	invalidate(c, s);
+	write(c, s);
+	check_validity(c, s);
+	check_data_validity(c, s);
 }
 
 int main(){
