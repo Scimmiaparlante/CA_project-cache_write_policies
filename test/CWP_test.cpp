@@ -1,7 +1,7 @@
 #include<cstring>
 #include "CacheWritePolicies.h"
 
-void store(CacheWritePolicies c, const char *s){
+void store(CacheWritePolicies *c, const char *s){
 	SAC_to_CWP	*request = new SAC_to_CWP;
 	message *m = new message;
 	uint16_t* d = new uint16_t[16];
@@ -17,10 +17,10 @@ void store(CacheWritePolicies c, const char *s){
 	request->address = 0x1111;
 	request->data = d;
 	m->magic_struct = (void*)request;
-	c.onNotify(m);
+	c->onNotify(m);
 }
 
-void check_dirty(CacheWritePolicies c, const char *s){
+void check_dirty(CacheWritePolicies *c, const char *s){
 	SAC_to_CWP	*request = new SAC_to_CWP;
 	message *m = new message;
 
@@ -28,13 +28,13 @@ void check_dirty(CacheWritePolicies c, const char *s){
 	strcpy(m->source, "test");
 	strcpy(m->dest, s);
 
-	request->op_type = OpType::CHECK_DIRTY;
+	request->op_type = CHECK_DIRTY;
 	request->address = 0x1111;
 	m->magic_struct = (void*)request;
-	c.onNotify(m);
+	c->onNotify(m);
 }
 
-void load(CacheWritePolicies c, const char *s){
+void load(CacheWritePolicies *c, const char *s){
 	SAC_to_CWP	*request = new SAC_to_CWP;
 	message *m = new message;
 
@@ -45,10 +45,10 @@ void load(CacheWritePolicies c, const char *s){
 	request->op_type = LOAD;
 	request->address = 0x1111;
 	m->magic_struct = (void*)request;
-	c.onNotify(m);
+	c->onNotify(m);
 }
 
-void write(CacheWritePolicies c, const char *s){
+void write(CacheWritePolicies *c, const char *s){
 	SAC_to_CWP	*request = new SAC_to_CWP;
 	message *m = new message;
 	uint16_t* d = new uint16_t[16];
@@ -66,10 +66,10 @@ void write(CacheWritePolicies c, const char *s){
 	request->address = 0x1111;
 	request->data = d;
 	m->magic_struct = (void*)request;
-	c.onNotify(m);
+	c->onNotify(m);
 }
 
-void invalidate(CacheWritePolicies c, const char *s){
+void invalidate(CacheWritePolicies *c, const char *s){
 	SAC_to_CWP	*request = new SAC_to_CWP;
 	message *m = new message;
 	
@@ -80,9 +80,9 @@ void invalidate(CacheWritePolicies c, const char *s){
 	request->op_type = INVALID_LINE;
 	request->address = 0x1111;
 	m->magic_struct = (void*)request;
-	c.onNotify(m);
+	c->onNotify(m);
 }
-void check_validity(CacheWritePolicies c, const char *s){
+void check_validity(CacheWritePolicies *c, const char *s){
 	SAC_to_CWP	*request = new SAC_to_CWP;
 	message *m = new message;
 	
@@ -93,9 +93,9 @@ void check_validity(CacheWritePolicies c, const char *s){
 	request->op_type = CHECK_VALIDITY_DIRTY;
 	request->address = 0x1111;
 	m->magic_struct = (void*)request;
-	c.onNotify(m);
+	c->onNotify(m);
 } 
-void check_data_validity(CacheWritePolicies c, const char *s){
+void check_data_validity(CacheWritePolicies *c, const char *s){
 	SAC_to_CWP	*request = new SAC_to_CWP;
 	message *m = new message;
 	
@@ -106,12 +106,12 @@ void check_data_validity(CacheWritePolicies c, const char *s){
 	request->op_type = CHECK_DATA_VALIDITY;
 	request->address = 0x1111;
 	m->magic_struct = (void*)request;
-	c.onNotify(m);
+	c->onNotify(m);
 }
 /*
 This function tests the cache for all the possible requests
 */
-void testCache(CacheWritePolicies c, const char *s){
+void testCache(CacheWritePolicies *c, const char *s){
 	store(c, s);
 	check_dirty(c, s);
 	load(c, s);
@@ -129,10 +129,10 @@ int main(){
 						cache4("cache4", 1, 4096, 64, WRITE_THROUGH, WRITE_NO_ALLOCATE);
 
 	//the tests are repeated for all the possible combinations of cache policies
-	testCache(cache1, "cache1");
-	testCache(cache2, "cache2");
-	testCache(cache3, "cache3");
-	testCache(cache4, "cache4");
+	testCache(&cache1, "cache1");
+	testCache(&cache2, "cache2");
+	testCache(&cache3, "cache3");
+	testCache(&cache4, "cache4");
 
 	return 0;
 }
