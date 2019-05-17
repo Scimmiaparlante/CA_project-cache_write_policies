@@ -71,7 +71,7 @@ void module::sendWithDelay(message* m, int delay){
 		for (int i = 0; i < 16; ++i)
 			std::cout<< std::hex <<((CWP_to_SAC*)(m->magic_struct))->data[i];
 
-	std::cout<<std::endl <<std::endl;
+	std::cout<<std::endl <<std::endl <<std::dec;
 	
 	if (((CWP_to_SAC*)(m->magic_struct))->data != NULL)
 		delete ((CWP_to_SAC*)(m->magic_struct))->data;
