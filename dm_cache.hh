@@ -1,4 +1,4 @@
-// #pragma once
+#pragma once
 
 #include "orchestrator/module.h"
 #include "orchestrator/structures.h"
