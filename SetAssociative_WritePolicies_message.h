@@ -7,7 +7,7 @@
 #define CWR_RESPONSE_DELAY	10
 
 
-enum OpType {  	SET_DIRTY,
+enum CWP_OpType {  	SET_DIRTY,
 				CHECK_DIRTY,
 				CHECK_VALIDITY_DIRTY,
 				CHECK_DATA_VALIDITY,
@@ -33,7 +33,7 @@ enum WriteResponse {NOT_NEEDED, PROPAGATE, NO_PROPAGATE, LOAD_RECALL, CHECK_NEXT
 
 struct SAC_to_CWP {
 	
-	OpType op_type;
+	CWP_OpType op_type;
 	uint16_t address; 
 	uint16_t* data;
 };

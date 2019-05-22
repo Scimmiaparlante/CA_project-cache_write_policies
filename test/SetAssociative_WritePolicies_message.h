@@ -7,7 +7,7 @@
 #define CWR_RESPONSE_DELAY	10
 
 
-enum OpType {  	SET_DIRTY,
+enum CWP_OpType {  	SET_DIRTY,
 				CHECK_DIRTY,
 				CHECK_VALIDITY_DIRTY,
 				CHECK_DATA_VALIDITY,
@@ -33,7 +33,7 @@ enum WriteResponse {NOT_NEEDED, PROPAGATE, NO_PROPAGATE, LOAD_RECALL, CHECK_NEXT
 
 struct SAC_to_CWP {
 	
-	OpType op_type;
+	CWP_OpType op_type;
 	uint16_t address; 
 	uint16_t* data;
 };
@@ -45,7 +45,7 @@ struct SAC_to_CWP {
 		-CHECK_DATA_VALIDITY: address of the checked cache line and the hit flag: 1 if the addressed line is valid and it's the requested one
 		-INVALID_LINE: address of the invalidated cache line and the hit flag: 0 if the line was already invalid
 		-LOAD: address of the requested cache line, hit flag (1 in case of hit) and the read data (null in case of miss)
-		-STORE: address of the written cache line
+		-STORE: address of the written cache line, hit flag 1 if the line was valid, 0 otherwise
 		-WRITE_WITH_POLICIES: 	if (hit_flag == 1)
 									address: the address of the written word
 								else

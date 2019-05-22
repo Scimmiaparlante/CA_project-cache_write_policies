@@ -49,28 +49,28 @@ void CacheWritePolicies::onNotify(message *m) {
 	//depending on the operation to perform, we call a specific function (that creates the response struct according to its actions)
 	switch(request_struct->op_type) {
 		
-		case OpType::SET_DIRTY:
+		case CWP_OpType::SET_DIRTY:
 			response_struct = WP_set_dirty(request_struct);
 			break;
-		case OpType::CHECK_DIRTY:
+		case CWP_OpType::CHECK_DIRTY:
 			response_struct = WP_check_dirty(request_struct);
 			break;
-		case OpType::CHECK_VALIDITY_DIRTY:
+		case CWP_OpType::CHECK_VALIDITY_DIRTY:
 			response_struct = WP_check_validity_dirty(request_struct);
 			break;
-		case OpType::CHECK_DATA_VALIDITY:
+		case CWP_OpType::CHECK_DATA_VALIDITY:
 			response_struct = WP_check_data_validity(request_struct);
 			break;
-		case OpType::INVALID_LINE:
+		case CWP_OpType::INVALID_LINE:
 			response_struct = WP_invalid_line(request_struct);
 			break;
-		case OpType::LOAD:
+		case CWP_OpType::LOAD:
 			response_struct = WP_load(request_struct);
 			break;
-		case OpType::STORE:
+		case CWP_OpType::STORE:
 			response_struct = WP_store(request_struct);
 			break;		
-		case OpType::WRITE_WITH_POLICIES:
+		case CWP_OpType::WRITE_WITH_POLICIES:
 			response_struct = WP_write_with_policies(request_struct);
 			break;			
 		default:
