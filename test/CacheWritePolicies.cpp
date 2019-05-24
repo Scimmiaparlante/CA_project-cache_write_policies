@@ -82,7 +82,7 @@ void CacheWritePolicies::onNotify(message *m) {
 	cout << "Cache write policies: Operation completed - sending reply..." << endl;
 	#endif
 	
-	// delete the received message and structure (!!!!! CHECK IF IT MUST BE DONE THIS WAY)
+	// delete the received message and structure
 	delete request_struct;
 	delete m;
 
