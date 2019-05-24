@@ -35,10 +35,8 @@ void CacheWritePolicies::onNotify(message *m) {
 	if(m->dest != getName())
 		return;
 
-	#ifdef DEBUG
 	//print a message to log the message delivery
 	cout << "Message " << m->id << ": Sent at " << m->timestamp << ", current timestamp " << getTime() << ". My name is " << getName() << "." << endl;
-	#endif
 	
 	//convert the magic struct to our type
 	SAC_to_CWP* request_struct = SAC_TO_CWP(m->magic_struct);
